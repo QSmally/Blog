@@ -1,0 +1,94 @@
+
+<!--
+    © Joey Smalen. All rights reserved.
+-->
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover"/>
+
+	<title>Blog - Joey Smalen</title>
+	<link rel="icon" href="favicon.ico" type="image/x-icon"/>
+	<link rel="shortcut icon" href="favicon.ico" type="img/x-icon"/>
+
+	<link href="styling.css" rel="stylesheet" type="text/css"/>
+
+	<meta property="title" 		 content="Blog - Joey Smalen"/>
+	<meta property="description" content="Smally's not-so-special blog, usually about little projects"/>
+	<meta name="keywords" 	     content="qsmally, joey, smalen"/>
+    <meta name="author" 		 content="© Joey Smalen"/>
+</head>
+<body>
+
+<!-- Page content -->
+<main>
+    <div class="container">
+        <div class="two-column">
+            <div class="content">
+                <a class="text-section" href="/home">Smally's blog</a>
+
+                <div class="text-body">
+                    This is a blog stream page that I will try to maintain. I'm
+                    not using anything fancy, like Wordpress, in order to
+                    update it. Posts that I create are shown on the sidebar or
+                    below depending on the size of your viewport. For some
+                    posts, new things will be added which is (probably)
+                    mentioned at the start of the post.
+                </div>
+
+                <div class="text-body">
+                    This server also aims to include all the files I reference,
+                    such as datasheets, if licensing allows for distribution.
+                    In that case, all rights are reserved to the people and all
+                    that.
+                </div>
+
+                <div class="text-body">
+                    The repository of this blog is maintained on <a href="/mirror">Github</a>.
+                </div>
+            </div>
+
+            <div class="sidebar list">
+                <img class="rounded" src="https://qsmally.org/profile.png" alt="Q"/>
+
+                <div class="text-tiny-section">Projects</div>
+
+                <div class="two-column">
+                    <div class="context">
+                        <a class="text-subsection" href="/z80">Z80</a>
+                        <div class="text-subtext">Z84C00 breadboard project</div>
+                        <div class="text-body">some explanation here</div>
+                    </div>
+                    <img class="thumbnail" src="/z80/thumbnail.png" alt="Z80 breadboard computer"/>
+                </div>
+
+                <div class="two-column">
+                    <div class="context">
+                        <a class="text-subsection" href="/6502">6502</a>
+                        <div class="text-subtext">W65C02 breadboard project</div>
+                        <div class="text-body">some explanation here</div>
+                    </div>
+                    <img class="thumbnail" src="/6502/thumbnail.png" alt="6502 breadboard computer"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- Footer -->
+<footer>
+    <div class="entity-bold">
+        <a href="/privacy">&copy; <span id="year"></span> Joey Smalen</a>
+    </div>
+</footer>
+
+<!-- Dynamic year -->
+<script>
+    document.getElementById("year").innerText = new Date().getFullYear();
+</script>
+
+</body>
+</html>

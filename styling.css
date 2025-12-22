@@ -1,0 +1,194 @@
+
+/*
+    © Joey Smalen. All rights reserved.
+*/
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    background: #010510;
+    color: #fff;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 14px;
+    height: calc(100% + (var(--safe-area-inset-top) + var(--safe-area-inset-bottom)));
+    padding-top: constant(safe-area-inset-top);
+    padding-top: env(safe-area-inset-top);
+}
+
+/* Layout */
+
+main {
+    display: flex;
+    min-height: 95vh;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    width: 75vw;
+}
+
+.two-column {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    overflow: hidden;
+    gap: 1em;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    max-width: 800px;
+    margin: 50px 20px;
+}
+
+.content img {
+    padding: 24px 50px;
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    max-width: 500px;
+    margin: 50px 20px;
+}
+
+.sidebar img {
+    max-width: 300px;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.context {
+    flex-grow: 1;
+    min-width: 200px;
+}
+
+.thumbnail {
+    display: flex;
+    max-width: 185px !important;
+}
+
+.rounded {
+    border-radius: 36%;
+}
+
+.spacer {
+    height: 3em;
+}
+
+footer {
+    overflow: hidden;
+    bottom: 0;
+    font-size: 90%;
+    margin: 10px 20px;
+}
+
+/* Style override */
+
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: ease-in 70ms;
+}
+
+a:hover {
+    color: #fff;
+    font-weight: 750 !important;
+}
+
+b, strong {
+    font-weight: 600;
+}
+
+/* Text style */
+
+.text-section {
+    color: rgb(225, 228, 229);
+    font-size: 3.5em;
+    font-weight: 750;
+}
+
+.text-tiny-section {
+    color: rgb(225, 228, 229);
+    font-size: 2.5em;
+    font-weight: 700;
+}
+
+.text-subsection {
+    color: rgb(116, 124, 128);
+    font-size: 1.6em;
+    font-weight: 500;
+}
+
+.text-subtext {
+    color: rgb(100, 105, 116);
+}
+
+.text-body {
+    padding-top: 24px;
+}
+
+.entity {
+    font-weight: 300;
+}
+
+.entity-bold {
+    font-weight: 475;
+}
+
+/* Responsive */
+
+@media screen and (max-width: 800px) {
+    .container {
+        width: 95vw;
+    }
+
+    .text-section,
+    .text-subsection,
+    .text-subtext,
+    .text-body {
+        padding-right: 5vh;
+    }
+
+    main {
+        min-height: 80vh;
+    }
+
+    .two-column {
+        flex-direction: column;
+    }
+
+    .content,
+    .sidebar {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 425px) {
+    .container {
+        width: 100vw;
+        font-size: 75%;
+    }
+
+    footer > *:last-child {
+        float: none;
+        text-align: right;
+    }
+}
