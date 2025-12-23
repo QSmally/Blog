@@ -85,10 +85,6 @@ main {
     max-width: 185px !important;
 }
 
-.rounded {
-    border-radius: 36%;
-}
-
 .spacer {
     height: 3em;
 }
@@ -117,6 +113,10 @@ b, strong {
     font-weight: 600;
 }
 
+p, ul {
+    padding-top: 24px;
+}
+
 /* Text style */
 
 .text-section {
@@ -141,10 +141,6 @@ b, strong {
     color: rgb(100, 105, 116);
 }
 
-.text-body {
-    padding-top: 24px;
-}
-
 .entity {
     font-weight: 300;
 }
@@ -163,7 +159,7 @@ b, strong {
     .text-section,
     .text-subsection,
     .text-subtext,
-    .text-body {
+    p, ul {
         padding-right: 5vh;
     }
 

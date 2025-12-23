@@ -5,3 +5,11 @@
 # File editor
 Session.vim
 *.swp
+
+# Zig
+zig-out
+.zig-cache
+
+# Generated HTML files
+*.html
+!*.zmpl.html
