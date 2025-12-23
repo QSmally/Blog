@@ -3,7 +3,7 @@
         <a class="text-section" href="/home">Smally's blog</a>
 
         <p>
-            This is a blog stream page that I will try to maintain. I'm using
+            This is a blog stream page that I try to maintain. I'm using
             <a href="https://github.com/jetzig-framework/zmpl">Zmpl</a> for
             templating with Zig. Posts that I create are shown on the sidebar
             or below depending on the size of your viewport. For some posts,
@@ -16,7 +16,7 @@
             such as datasheets, if licensing allows for distribution.
             In that case, all rights are reserved to the people and all
             that. I'd appreciate it that information or pictures from
-            me will be linked to their respective pages.
+            me will be cited to their respective hyperlinks.
         </p>
 
         <p>

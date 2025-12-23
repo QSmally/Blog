@@ -30,6 +30,10 @@ main {
     overflow: hidden;
 }
 
+img {
+    max-width: 75vw;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -107,6 +111,14 @@ a {
 a:hover {
     color: #fff;
     font-weight: 750 !important;
+}
+
+.underlined a {
+    text-decoration: underline;
+}
+
+.underlined a:hover {
+    font-weight: 600 !important;
 }
 
 b, strong {

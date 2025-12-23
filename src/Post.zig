@@ -22,5 +22,11 @@ pub const posts = [_]Post {
         .description = "some information here",
         .last_change = "2025-12-23",
         .thumbnail = "posts/6502/thumbnail.jpg",
-        .path = "posts/6502" }
+        .path = "posts/6502" },
+    .{
+        .name = "Vim",
+        .title = "Controversy about modern IDEs",
+        .description = "My reasons for preferring Vim over 'modern' IDEs",
+        .last_change = "2025-12-23",
+        .path = "posts/vim" }
 };
