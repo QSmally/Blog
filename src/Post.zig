@@ -13,14 +13,14 @@ pub const posts = [_]Post {
         .name = "Z80",
         .title = "Z84C00 breadboard project",
         .description = "some information here",
-        .last_change = "2025-12-23",
+        .last_change = "draft",
         .thumbnail = "posts/z80/thumbnail.jpg",
         .path = "posts/z80" },
     .{
         .name = "6502",
         .title = "W65C02 breadboard project",
         .description = "some information here",
-        .last_change = "2025-12-23",
+        .last_change = "2025-12-26",
         .thumbnail = "posts/6502/thumbnail.jpg",
         .path = "posts/6502" },
     .{

@@ -3,12 +3,13 @@
         <a class="text-section" href="/home">Smally's blog</a>
 
         <p>
-            This is a blog stream page that I try to maintain. I'm using
-            <a href="https://github.com/jetzig-framework/zmpl">Zmpl</a> for
-            templating with Zig. Posts that I create are shown on the sidebar
-            or below depending on the size of your viewport. For some posts,
-            new things and updates will be added which is (probably) mentioned
-            at the start of the post.
+            This is a blog stream page that I try to maintain. I mostly write
+            about (side) projects or anything interesting. I put together a
+            static site generator using the <a href="https://github.com/jetzig-framework/zmpl">Zmpl</a>
+            templating engine with Zig. Posts that I create are shown on the
+            sidebar or below depending on the size of your viewport. For some
+            posts, new things and updates will be added which is (probably)
+            mentioned at the start of the post.
         </p>
 
         <p>
@@ -20,7 +21,14 @@
         </p>
 
         <p>
-            The repository of this blog is maintained on <a href="/mirror">Github</a>.
+            Some of my posts expire when I feel like it. Filter on
+            <code>Posts</code> in the repository's commit log to see historical
+            changes.
+        </p>
+
+        <p>
+            The repository of this blog is maintained on
+            <a href="/mirror">Github</a>.
         </p>
     </div>
 

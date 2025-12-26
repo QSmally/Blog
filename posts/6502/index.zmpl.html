@@ -1,46 +1,110 @@
 
-<div class="two-column">
+<div class="two-column underlined">
     <div class="content">
-        <p>
+        <div>
             For those who are a tiny bit familiar with me, I've been interested
             in microprocessor architectures way before I learned to write
             software. That's about 15 years ago now.  Sometimes, lately, I
             question myself as to why I haven't just bought old CPU components
             earlier.
-        </p>
+        </div>
 
         <p>
-            As you may or may not know, these architectural designs are over 50
-            years old about now. They remain a classic. But, the components are
-            quite difficult to find in Europe. I did manage to find a
-            retro-style webshop which I purchased used or NOS components from!
+        As you may or may not know, these architectural designs are over 50
+        years old about now. They remain a classic. But, the components are
+        quite difficult to find in Europe. I did manage to find a retro-style
+        webshop which I purchased used or NOS components from!
         </p>
 
         <p class="text-tiny-section">Part list</p>
 
         <p>
-            I couldn't find all WDC CMOS versions of the 65-family of ICs, so I
-            went with a peculiar combination:
+        I couldn't find all WDC CMOS versions of the 65-family of ICs, so I
+        went with a peculiar combination:
         </p>
 
         <ul>
-            <li>W65C02S (CMOS, 14 MHz)</li>
-            <li>MOS 6522 (NMOS, 1 MHz) 'VIA'</li>
-            <li>R6551 (NMOS, 2 MHz) 'ACIA'</li>
-            <li>W27C020 (256 KiB) EEPROM</li>
-            <li>AS6C62256 (32 KiB) SRAM</li>
-            <li>SN74LS00N NANDs</li>
+            <li><a href="w65c02s.pdf">W65C02S (CMOS, 14 MHz)</a></li>
+            <li><a href="6522-Commodore.pdf">MOS 6522 (NMOS, 1 MHz) 'VIA'</a></li>
+            <li><a href="R6551AP.pdf">R6551 (NMOS, 2 MHz) 'ACIA'</a></li>
+            <li><a href="W27C020.pdf">W27C020 (256 KiB) EEPROM</a></li>
+            <li><a href="AS6C62256.pdf">AS6C62256 (32 KiB) SRAM</a></li>
+            <li><a href="sn74ls00.pdf">SN74LS00N NANDs</a></li>
         </ul>
 
         <p>
-            Given that I have a 1 MHz crystal oscillator, this runs fine. I'm
-            using an LM7805 fixed 5V voltage regulator to power this through a
-            9V battery. There's a slight but acceptable voltage drop throughout
-            the circuit.
+        Given that I have a 1 MHz crystal oscillator, this runs fine. I'm using
+        an LM7805 fixed 5V voltage regulator to power this through a 9V battery
+        or a variable power source. There's a slight but acceptable voltage
+        drop of less than 300 mV throughout the circuit. A 1.8432 MHz crystal
+        resonator is used for the ACIA to use as baudrate generation.
+        </p>
+
+        <p class="text-tiny-section">Memory map</p>
+
+        <p>
+        The memory map of this breadboard computer is similar to
+        <a href="https://www.youtube.com/BenEater">Ben Eater</a>'s
+        architectural design, as it made a lot of sense for this build. It has
+        the added benefit to immediately use their
+        <a href="https://gist.github.com/beneater/8136c8b7f2fd95ccdd4562a498758217">adapted Apple I Wozmon implementation</a>.
+        Ben Eater produces great explanational videos, and is generally a good
+        person; I do recommend supporting them and their work.
+        </p>
+
+        <p>
+        That being said, the memory map consists of:
+        </p>
+
+        <ul>
+            <li><code>0000 - 3FFF : </code>SRAM (16k)</li>
+            <li><code>4000 - 7FFF : </code>I/O (16k)</li>
+            <li><code>8000 - FFFF : </code>EEPROM (32k)</li>
+        </ul>
+
+        <p>
+        Currently, the I/O space is decoded lazily, with two I/O devices being
+        present on the bus:
+        </p>
+
+        <ul>
+            <li><code>5000 - 5003 : </code>6551 Asynchronous Communication Interface Adapter (ACIA)</li>
+            <li><code>6000 - 600F : </code>6522 Versatile Interface Adapter (VIA)</li>
+        </ul>
+
+        <p>
+        The NANDs are used for inverting the A15 signal (for active low EEPROM
+        enable and used in the I/O enable), I/O enable (low A15 and high A14,
+        for enabling the I/O address space), as well as write clock
+        synchronisation with the SRAM.
         </p>
     </div>
 
     <div class="sidebar list">
         <img src="thumbnail.jpg" alt="6502 breadboard computer"/>
+    </div>
+</div>
+
+<div class="two-column underlined">
+    <div class="content">
+        <div class="text-subtext">2025-12-26</div>
+        <div class="text-tiny-section">Wozmon</div>
+
+        <p>
+        I ran the Wozmon hex monitor on this 6502. The picture lists out
+        address range <code>FF00</code> to <code>FFFF</code>, which is the page
+        that Wozmon is placed under. The <a href="AppleI_Manual.pdf">Apple I manual</a>
+        includes a test program that you can load into RAM and run
+        immediately.
+        </p>
+
+        <p>
+        The breadboard computer is connected through UART (TTL) to my machine
+        running Minicom.
+        </p>
+    </div>
+
+    <div class="sidebar list">
+        <img src="wozmon.png" alt="Wozmon"/>
     </div>
 </div>
