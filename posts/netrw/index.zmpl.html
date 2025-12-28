@@ -1,0 +1,45 @@
+
+<div class="two-column underlined">
+    <div class="content">
+        <p>
+        I use Vim's built-in <a href="https://vimhelp.org/pi_netrw.txt.html">Netrw</a>
+        file browser to browse my files. I've noticed that it's good for most
+        things that I use a file browser for.  Occasionally I use a simple
+        fuzzy finder, if I'm working on a project and switching between files
+        instead of having lots of windows open, but it does require me to know
+        the file names ahead of time. Vim being Vim, <em>Netrw has a lot
+        keybindings and motions</em>. This is fine, most of the time, because
+        you can learn new features as you need them. Sometimes, though, you can
+        make mistakes. I can confidently say that all Vim users have experienced
+        total confusion at least once in their time using the text editor.
+        </p>
+
+        <p>
+        That being said, Netrw has a feature that allows you to mark files
+        within a directory view (marking allows you perform an action on the
+        selected batch of files). To mark a file, one can use the
+        <code>mf</code> mapping, and to unmark everything, <code>mF</code>.
+        I was playing around with this newly learned feature one day, and
+        moved on since then.
+        </p>
+
+        <p>
+        A couple of months later, I turned on my printer for the first time in
+        a while. It apparently had some things in its job queue to print. It
+        printed out 12 pages of seemingly random files and directory listings
+        that I used in the past months. In hindsight, 12 pages is not that
+        much, but at the time (about two years ago), it felt like it kept going
+        and going. This was before I knew of the existance of the
+        <em>cancel</em> button it had (new technology, right?). I must've
+        accidentally pressed the <code>mp</code> mapping a couple of times.
+        </p>
+
+        <p>
+        <a href="https://github.com/QSmally/Terminal/commit/89a8fad8055fa892dfea1ce95ad413b31366ec43">This commit patches the default Netrw mapping</a>.
+        Reading the Netrw documentation in the present day with Vim 9.1, I
+        cannot find the <code>mp</code> mapping documented anywhere anymore.
+        Maybe many others have run into this problem, too, which my silly self
+        secretly hopes.
+        </p>
+    </div>
+</div>

@@ -24,6 +24,12 @@ pub const posts = [_]Post {
         .thumbnail = "posts/6502/thumbnail.jpg",
         .path = "posts/6502" },
     .{
+        .name = "Netrw",
+        .title = "Accidentally printing 12 pages of files",
+        .description = "How a Netrw default wasted my paper supply",
+        .last_change = "2025-12-28",
+        .path = "posts/netrw" },
+    .{
         .name = "Vim",
         .title = "Controversy about modern IDEs",
         .description = "My reasons for preferring Vim over 'modern' IDEs",
