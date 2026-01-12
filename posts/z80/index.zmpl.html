@@ -12,11 +12,151 @@
         <p>
         That aside, I'm quite interested in kernels (as indicated by
         <a href="https://qcpu.qsmally.org">QOS</a>) so it makes sense that I'll
-        be attempting to write a simple one for it.
+        be attempting to write a simple one for it. Ideally, my vision is to
+        interface with a terminal (with UART through a <a href="Z8440.pdf">SIO</a>)
+        and create a binary loader (through a <a href="Z8410.pdf">DMA</a>).
+        From there, new software can be serialised into SRAM and ran
+        immediately, without having to write to an EEPROM.
         </p>
+
+        <p>
+        As frontend to this operating system, I'm going to attempt to
+        recreate <a href="/posts/6502">Wozmon</a> (Apple I software for the
+        6502) on the Z80.
+        </p>
+
+        <p class="text-tiny-section">Part list</p>
+
+        <p>
+        I'm using the 6 MHz specs of all the Z84Cxx components, except for the
+        CTC (which is an NMOS spec):
+        </p>
+
+        <ul>
+            <li><a href="Z8400.pdf">Z84C00 (CMOS, 6 MHz) 'Z80 CPU'</a></li>
+            <li><a href="Z8420.pdf">Z84C20 (CMOS, 6 MHz) 'PIO' (Parallel Input/Output)</a></li>
+            <li><a href="Z8430.pdf">Z84C30 (NMOS, 6 MHz) 'CTC' (Counter/Timer Circuit)</a></li>
+            <li><a href="Z8440.pdf">Z84C40 (CMOS, 6 MHz) 'SIO/0' (Serial Input/Output)</a></li>
+        </ul>
+
+        <p>
+        Now, I'm running this system on a 4 MHz crystal oscillator. I also have
+        a 1.8432 MHz crystal oscillator tied to the trigger inputs of the CTC
+        for the first three channels. The fourth channel trigger input is tied
+        to the trigger output of the third channel. The trigger inputs are used
+        whilst in counter mode, and allow me to use them for flexible baudrate
+        generation. Channels 0 and 1 of the CTC are tied to the clocks of SIO
+        channels A and B, respectively.
+        </p>
+
+        <p class="text-tiny-section">Memory map</p>
+
+        <p>
+        For those who are unfamiliar with the Z80 address space, and unlike
+        most other CPUs around that time, the Z80 has separate memory and I/O
+        spaces. This is indicated by the <code>MREQ</code> and
+        <code>IOREQ</code> control lines from the CPU.
+        </p>
+
+        <p>
+        In the memory range, I set up the memory map so writable RAM takes up
+        the majority of space. This is for the reason I stated before, as I'd
+        like to upload programs through a loader into RAM. So:
+        </p>
+
+        <ul>
+            <li><code>0000 - 3FFF : </code>EEPROM (16k)</li>
+            <li><code>4000 - FFFF : </code>SRAM (48k)</li>
+        </ul>
+
+        <p>
+        Conversely, the I/O space is only 8 bit, rather than the full memory
+        address range of 16 bits. The Z80 implemented it like this essentially
+        due to the <code>OTIR</code>-like instructions, which use register
+        <code>B</code> for byte countdown, and register <code>C</code> for the
+        I/O address. In any case, the upper 3 bits of the address are decoded:
+        </p>
+
+        <ul>
+            <li><code>0b101xxxxx : </code>PIO</li>
+            <li><code>0b110xxxxx : </code>SIO</li>
+            <li><code>0b111xxxxx : </code>CTC</li>
+        </ul>
     </div>
 
     <div class="sidebar list">
         <img src="thumbnail.jpg" alt="Z80 breadboard computer"/>
+    </div>
+</div>
+
+<div class="two-column underlined">
+    <div class="content">
+        <div class="text-subtext">2025-12-28</div>
+        <div class="text-tiny-section">Wozmon for the Z80 family</div>
+
+        <p>
+        Wozmon is the original software that came with the Apple I. I ran it on
+        my <a href="/posts/6502">6502</a> breadboard project. Now, one with a
+        few brain cells might realise that the Apple I isn't made with the Z80
+        CPU. A short superficial research shows that few have recreated it, but
+        it seemed fun to do so, too.
+        </p>
+
+        <p>
+        My Wozmon, or <a href="https://github.com/QSmally/ZMon">ZMon</a> as I'd
+        like to call it, uses at the time of writing 253 bytes of EEPROM,
+        <em>without initialisation of I/O</em>. That last bit costs another
+        40-ish bytes because the SIO needs quite a lot of bytes in sequence for
+        it to be set up.
+        </p>
+
+        <p>
+        This hex monitor allows you to now write programs in hexadecimal and
+        jump to them. For example, <code>3E</code> is the opcode for <code>ld
+        a, n</code>, <code>D3</code> for <code>out (n), a</code>, and
+        <code>C3</code> for the absolute jump instruction.
+        </p>
+    </div>
+
+    <div class="sidebar list">
+        <img src="wozmon.jpg" alt="Wozmon for the Z80 family"/>
+    </div>
+</div>
+
+<div class="two-column underlined">
+    <div class="content">
+        <div class="text-subtext">2026-01-12</div>
+        <div class="text-tiny-section">Quest to find the Z80 DMA</div>
+
+        <p>
+        I mentioned in the beginning that I wanted to perform block transfers
+        from UART over the SIO to the RAM. This is to load programs into
+        memory, such as an operating system or any other software. This approach
+        allows me to reduce rewriting the EEPROM and quicken development of the
+        other stuff I'd like to make. DMA transfers are faster (and more fun!)
+        than doing a CPU-bound transfer.
+        </p>
+
+        <p>
+        Unlike the other components that I have, I could not find any Z80 DMA
+        that I could order. Not in any of the few webshops for components I
+        know, or the single electronics store which I have access to nearby.
+        I even contacted the store which <em>could</em> deliver one within two
+        days, but a few weeks after ordering, I hadn't heard from them and they
+        eventually stopped responding to my emails.
+        </p>
+
+        <p>
+        Now, today I finally contacted the webshop that I've been loyal to
+        since the start, even though they haven't listed it in the shop. They
+        have a possibility to deliver a <code>Z0841004-PSC</code>. Not CMOS and
+        not 6 MHz, but it's better than nothing. Luckily I run a 4 MHz clock on
+        this project instead of the full 6 MHz. It will take roughly three
+        weeks until I can even <em>order</em>. I'll just wait and see.
+        </p>
+
+        <p>
+        In the meantime I'll create a CPU-bound block loader.
+        </p>
     </div>
 </div>
