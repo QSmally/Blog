@@ -37,6 +37,9 @@
             <li><a href="Z8420.pdf">Z84C20 (CMOS, 6 MHz) 'PIO' (Parallel Input/Output)</a></li>
             <li><a href="Z8430.pdf">Z84C30 (NMOS, 6 MHz) 'CTC' (Counter/Timer Circuit)</a></li>
             <li><a href="Z8440.pdf">Z84C40 (CMOS, 6 MHz) 'SIO/0' (Serial Input/Output)</a></li>
+            <li><a href="sn74ls32.pdf">SN74LS32N ORs</a></li>
+            <li><a href="sn74hc14.pdf">SN74HC14N Hex Inverters</a></li>
+            <li><a href="sn74hcs238.pdf">SN74HC238N 3-to-8 Line Decoder</a></li>
         </ul>
 
         <p>
@@ -125,38 +128,64 @@
 
 <div class="two-column underlined">
     <div class="content">
-        <div class="text-subtext">2026-01-12</div>
-        <div class="text-tiny-section">Quest to find the Z80 DMA</div>
+        <div class="text-subtext">2026-01-15</div>
+        <div class="text-tiny-section">Quest to add the Z80 DMA</div>
 
         <p>
-        I mentioned in the beginning that I wanted to perform block transfers
-        from UART over the SIO to the RAM. This is to load programs into
-        memory, such as an operating system or any other software. This approach
-        allows me to reduce rewriting the EEPROM and quicken development of the
-        other stuff I'd like to make. DMA transfers are faster (and more fun!)
-        than doing a CPU-bound transfer.
+        My goal of this Z80 <em>System on a Breadboard</em> (SoB) is to allow
+        you to upload a binary file and immediately write it to RAM using a
+        loader. This way, you can program it without rewriting the EEPROM, just
+        through the UART connection with the SIO.
         </p>
 
         <p>
-        Unlike the other components that I have, I could not find any Z80 DMA
-        that I could order. Not in any of the few webshops for components I
-        know, or the single electronics store which I have access to nearby.
-        I even contacted the store which <em>could</em> deliver one within two
-        days, but a few weeks after ordering, I hadn't heard from them and they
-        eventually stopped responding to my emails.
+        Today, I was able to collect the Z80 DMA that I had ordered:
+        </p>
+
+        <ul>
+            <li><a href="Z8410.pdf">Z84C10 (CMOS, 4 MHz) 'DMA' (Direct Memory Access)</a></li>
+        </ul>
+
+        <p>
+        I've registered the DMA peripheral at the following I/O address:
+        </p>
+
+        <ul>
+            <li><code>0b100xxxxx : </code>DMA</li>
+        </ul>
+
+        <p>
+        I had to add another breadboard in order to fit the DMA. In the first
+        picture, the DMA can be seen at the top. It connects to the control
+        wires from the Z80 CPU, as well as bus request and bus acknowledge, and
+        the address and data buses.
         </p>
 
         <p>
-        Now, today I finally contacted the webshop that I've been loyal to
-        since the start, even though they haven't listed it in the shop. They
-        have a possibility to deliver a <code>Z0841004-PSC</code>. Not CMOS and
-        not 6 MHz, but it's better than nothing. Luckily I run a 4 MHz clock on
-        this project instead of the full 6 MHz. It will take roughly three
-        weeks until I can even <em>order</em>. I'll just wait and see.
+        To test the DMA, I wrote a trivial program at address <code>1000</code>
+        (in EEPROM) which copies 256 bytes from <code>5000</code> to
+        <code>6000</code> (in RAM) and jumps back to ZMon. In the second
+        picture, the addresses are first assessed before calling
+        <code>1000R</code> (jumping to the DMA copy routine), after which the
+        addresses are printed out again, which shows that the DMA transferred
+        the source range to the destination range.
         </p>
 
         <p>
-        In the meantime I'll create a CPU-bound block loader.
+        I still need to test this using the SIO Channel B port. Ready B is
+        wired to the ready control line of the DMA. This allows the SIO to
+        trigger DMA transfers from the I/O peripheral and sync it to memory
+        automatically, without CPU intervention.
         </p>
+
+        <p>
+        Maybe I'll add another DMA for SIO Channel A, in order to use it for
+        other purposes like disk transfers (if I'll ever create that).
+        </p>
+    </div>
+
+    <div class="sidebar list">
+        <img src="dma-system.jpg" alt="The new system layout with a DMA at the top"/>
+        <img src="dma-memory.jpg" alt="DMA transfer depicted in ZMon"/>
     </div>
 </div>
