@@ -37,6 +37,8 @@
             <li><a href="Z8420.pdf">Z84C20 (CMOS, 6 MHz) 'PIO' (Parallel Input/Output)</a></li>
             <li><a href="Z8430.pdf">Z84C30 (NMOS, 6 MHz) 'CTC' (Counter/Timer Circuit)</a></li>
             <li><a href="Z8440.pdf">Z84C40 (CMOS, 6 MHz) 'SIO/0' (Serial Input/Output)</a></li>
+            <li><a href="W27C020.pdf">W27C020 (256 KiB) EEPROM</a></li>
+            <li><a href="AS6C1008-55PCN.pdf">AS6C1008 (128 KiB) SRAM</a></li>
             <li><a href="sn74ls32.pdf">SN74LS32N ORs</a></li>
             <li><a href="sn74hc14.pdf">SN74HC14N Hex Inverters</a></li>
             <li><a href="sn74hcs238.pdf">SN74HC238N 3-to-8 Line Decoder</a></li>
@@ -168,19 +170,20 @@
         picture, the addresses are first assessed before calling
         <code>1000R</code> (jumping to the DMA copy routine), after which the
         addresses are printed out again, which shows that the DMA transferred
-        the source range to the destination range.
-        </p>
-
-        <p>
-        I still need to test this using the SIO Channel B port. Ready B is
-        wired to the ready control line of the DMA. This allows the SIO to
-        trigger DMA transfers from the I/O peripheral and sync it to memory
+        the source range to the destination range. I also wrote a program
+        (which is not depicted) that receives 16 bytes from an I/O port, which
+        tests the SIO's ready line to the DMA. This allows the SIO to trigger
+        DMA transfers from the I/O peripheral and sync it to memory
         automatically, without CPU intervention.
         </p>
 
         <p>
         Maybe I'll add another DMA for SIO Channel A, in order to use it for
-        other purposes like disk transfers (if I'll ever create that).
+        other purposes like disk transfers (if I'll ever create that). In any
+        case, this direct transfer method allows me to (not easily, but more
+        neatly) create a file loader. In contrast, I can now transfer entire
+        ASCII files to the SIO without having to stall the CPU due to SIO
+        lag (transmission delay).
         </p>
     </div>
 
