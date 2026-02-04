@@ -1,0 +1,74 @@
+
+<div class="two-column underlined">
+    <div class="content">
+        <div>
+            I decided to continue the quests of getting microprocessors from
+            the 70s to work on breadboards and create interesting systems from
+            them. Besides the 6809, I have a larger, more complexe, but
+            hopefully super rewarding project lining up <em>soon</em>. The
+            <a href="/posts/6502">6502</a> allowed me to run the original
+            Wozmon software on it through a serial line. After that, I created
+            a well-designed <a href="/posts/z80">Z80</a> system that runs a
+            Wozmon clone I wrote, but also an expanded operating system.
+        </div>
+
+        <p>
+        This time, I'm attempting to create a system using the 6809
+        microprocessor. It's one successor to the original 6800 architecture,
+        but adds lots of 16 bit features, such as two 16 bit index registers,
+        another 16 bit stack pointer, and the ability to combine the two
+        accumulators into one 16 bit register. These characteristic make the
+        6809 very versatile.
+        </p>
+
+        <p class="text-tiny-section">Part list</p>
+
+        <ul>
+            <li><a href="MC6809.pdf">MC6809 (NMOS, 4 MHz)</a></li>
+        </ul>
+    </div>
+</div>
+
+<div class="two-column underlined">
+    <div class="content">
+        <div class="text-subtext">2026-02-04</div>
+        <div class="text-tiny-section">Timing faults</div>
+
+        <p>
+        Now, I don't have much to show you yet, but I always start these
+        projects by getting something rather simple to work. The first task was
+        to write output data to a Peripheral Interface Adapter (PIA). However,
+        oddly enough (and after verifying every connection and details of the
+        datasheets), the output to the PIA were... sporadic. Unlike the CMOS
+        versions of the 6502 and Z80, the 6809 is not a static design, and you
+        therefore cannot halt the clock to single-step instructions and monitor
+        the bus, which I used to do with a very ad-hoc Arduino setup.
+        </p>
+
+        <p>
+        After a lot of headscratching, I decided to buy a cheap logic analyser
+        with a resolution up to 24 MHz and record it with <a href="https://sigrok.org">Sigrok</a>.
+        I inspected the address lines, data lines, and some control lines. It
+        turns out that everything ran perfectly for maybe a millisecond.
+        Inspecting the E (enable) line, which is the last signal in the
+        picture, everything starts going wrong after it pulses a <em>tiny</em>
+        bit shorter than usual. This made me realise that I accidentally used
+        <em>ever so slightly</em> larger load capacitors in the crystal circuit
+        than spec (27 pF vs. 24 pF). Even single-stepping wouldn't have caught
+        this.
+        </p>
+
+        <p>
+        Just as an end note, after getting the basic microprocessor setup to
+        work on the 4 MHz crystal, there was something more odd that I noticed
+        with this system. I turned off the lamp on my desk, in order to get
+        ready to leave, but the output of the PIA changed. Somehow,
+        somewhere, signal noise or a current surge generated from the lamp
+        indirectly channels into the PIA to change its state. How peculiar.
+        </p>
+    </div>
+
+    <div class="sidebar list">
+        <img src="logic-analyser-e-short.png" alt="Logic analyser E short"/>
+    </div>
+</div>

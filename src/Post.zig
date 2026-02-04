@@ -10,6 +10,12 @@ path: []const u8 = "",
 
 pub const posts = [_]Post {
     .{
+        .name = "6809",
+        .title = "MC6809 breadboard project",
+        .description = "some information here",
+        .last_change = "2026-02-04",
+        .path = "posts/6809" },
+    .{
         .name = "Z80",
         .title = "Z84C00 breadboard project",
         .description = "System on a Breadboard (SoB)",
