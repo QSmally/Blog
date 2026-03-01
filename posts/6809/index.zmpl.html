@@ -4,12 +4,12 @@
         <div>
             I decided to continue the quests of getting microprocessors from
             the 70s to work on breadboards and create interesting systems from
-            them. Besides the 6809, I have a larger, more complexe, but
+            them. Besides the 6809, I have a larger, more complex, but
             hopefully super rewarding project lining up <em>soon</em>. The
             <a href="/posts/6502">6502</a> allowed me to run the original
             Wozmon software on it through a serial line. After that, I created
             a well-designed <a href="/posts/z80">Z80</a> system that runs a
-            Wozmon clone I wrote, but also an expanded operating system.
+            Wozmon clone I wrote, and also a time-sharing operating system.
         </div>
 
         <p>
@@ -25,7 +25,19 @@
 
         <ul>
             <li><a href="MC6809.pdf">MC6809 (NMOS, 4 MHz)</a></li>
+            <li><a href="MC6821.pdf">MC68B21 (NMOS, 2 MHz) 'PIA'</a></li>
+            <li><a href="MC6840.pdf">MC6840 (NMOS, 1 MHz) 'PTM'</a></li>
+            <li><a href="MC6850.pdf">MC6850 (NMOS, 1 MHz) 'ACIA'</a></li>
+            <li><a href="W27C020.pdf">W27C020 (256 KiB) EEPROM</a></li>
+            <li><a href="AS6C62256.pdf">AS6C62256 (32 KiB) SRAM</a></li>
+            <li><a href="sn74ls00.pdf">SN74LS00N NANDs</a></li>
+            <li><a href="sn74ls04.pdf">SN74LS04N Hex Inverters</a></li>
+            <li><a href="sn74ls393.pdf">SN74LS393N Binary Counters</a></li>
         </ul>
+    </div>
+
+    <div class="sidebar list">
+        <img src="thumbnail.jpg" alt="6809 breadboard computer"/>
     </div>
 </div>
 
@@ -70,5 +82,49 @@
 
     <div class="sidebar list">
         <img src="logic-analyser-e-short.png" alt="Logic analyser E short"/>
+    </div>
+</div>
+
+<div class="two-column underlined">
+    <div class="content">
+        <div class="text-subtext">2026-03-01</div>
+        <div class="text-tiny-section">Cursed design (process)</div>
+
+        <p>
+        I haven't been able to work on the 6809 for quite a while, as the last
+        update was around a month ago, but I finally did spend a couple nights
+        on getting all the peripherals wired up. The Programmable Timer Module
+        (PTM) has been terrible to get working in particular. Somehow, the
+        Motorola datasheets are really horrible at explaining little details
+        as it's quite all over the place. For example, to get timer 3 working,
+        it's required to first initialise timer 1 (or so I found).
+        </p>
+
+        <p>
+        On another note, which is more my own fault, I thought I could use the
+        PTM as baudrate generator for the Asynchronous Communications Interface
+        Adapter (ACIA) like I did with the <a href="/posts/z80">Z80 project</a>.
+        For the Z80 CTC and SIO, it was advertised like this. However, unlike
+        the asynchronous Z80 CTC, the PTM synchronises external clocks with the
+        system (E) clock. This introduces shifts and glitches in the baudrate
+        clock which I planned to use for the ACIA.
+        </p>
+
+        <p>
+        In an attempt to work around this, I had to create a baudrate generator
+        circuit myself, as the 6800-family ACIA doesn't have one of its own,
+        contrary to the <a href="/posts/6502">6551 ACIA</a>. I'm using a 1.8432
+        MHz crystal oscillator, so I need to divide its signal in 12, together
+        with the internal 16x divider by the ACIA, which results in
+        <code>1843200 / 12 / 16 = 9600</code>.
+        <a href="http://www.6502.org/users/dieter/uart/uart_3.htm">This post</a>
+        sums up the circuit quite well, as the picture on the right. Now, I
+        finally have a working system with all the periphals that I want right
+        now; it's time to port Wozmon to it.
+        </p>
+    </div>
+
+    <div class="sidebar list">
+        <img src="http://www.6502.org/users/dieter/uart/uart_baudrate.png" alt="Baudrate generator"/>
     </div>
 </div>

@@ -13,7 +13,8 @@ pub const posts = [_]Post {
         .name = "6809",
         .title = "MC6809 breadboard project",
         .description = "some information here",
-        .last_change = "2026-02-04",
+        .last_change = "2026-03-01",
+        .thumbnail = "posts/6809/thumbnail.jpg",
         .path = "posts/6809" },
     .{
         .name = "Z80",
@@ -25,7 +26,7 @@ pub const posts = [_]Post {
     .{
         .name = "6502",
         .title = "W65C02 breadboard project",
-        .description = "Machine running the Apple I software through UART",
+        .description = "System running original Apple I software with UART",
         .last_change = "2025-12-26",
         .thumbnail = "posts/6502/thumbnail.jpg",
         .path = "posts/6502" },
