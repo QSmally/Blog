@@ -25,14 +25,38 @@
 
         <ul>
             <li><a href="MC6809.pdf">MC6809 (NMOS, 4 MHz)</a></li>
-            <li><a href="MC6821.pdf">MC68B21 (NMOS, 2 MHz) 'PIA'</a></li>
-            <li><a href="MC6840.pdf">MC6840 (NMOS, 1 MHz) 'PTM'</a></li>
-            <li><a href="MC6850.pdf">MC6850 (NMOS, 1 MHz) 'ACIA'</a></li>
+            <li><a href="MC6821.pdf">MC68B21 (NMOS, 2 MHz) 'PIA' (Peripheral Interface Adapter)</a></li>
+            <li><a href="MC6840.pdf">MC6840 (NMOS, 1 MHz) 'PTM' (Programmable Timer Module)</a></li>
+            <li><a href="MC6850.pdf">MC6850 (NMOS, 1 MHz) 'ACIA' (Asynchronous Communications Interface Adapter)</a></li>
             <li><a href="W27C020.pdf">W27C020 (256 KiB) EEPROM</a></li>
             <li><a href="AS6C62256.pdf">AS6C62256 (32 KiB) SRAM</a></li>
             <li><a href="sn74ls00.pdf">SN74LS00N NANDs</a></li>
             <li><a href="sn74ls04.pdf">SN74LS04N Hex Inverters</a></li>
             <li><a href="sn74ls393.pdf">SN74LS393N Binary Counters</a></li>
+        </ul>
+
+        <p class="text-tiny-section">Memory map</p>
+
+        <p>
+        The memory map of this breadboard computer is similar to the
+        <a href="/posts/6502">6502 project</a>. It consists of:
+        </p>
+
+        <ul>
+            <li><code>0000 - 3FFF : </code>SRAM (16k)</li>
+            <li><code>4000 - 7FFF : </code>I/O (16k)</li>
+            <li><code>8000 - FFFF : </code>EEPROM (32k)</li>
+        </ul>
+
+        <p>
+        The I/O space is lazily decoded with three devices being present on the
+        bus:
+        </p>
+
+        <ul>
+            <li><code>4800 - 4807 : </code>6840 Programmable Timer Module (PTM)</li>
+            <li><code>5000 - 5001 : </code>6850 Asynchronous Communication Interface Adapter (ACIA)</li>
+            <li><code>6000 - 6003 : </code>6821 Peripheral Interface Adapter (PIA)</li>
         </ul>
     </div>
 
@@ -129,5 +153,30 @@
             <img src="uart_baudrate.png" alt="Baudrate generator"/>
             <div>© Dieter Mueller 2007</div>
         </div>
+    </div>
+</div>
+
+<div class="two-column underlined">
+    <div class="content">
+        <div class="text-subtext">2026-03-02</div>
+        <div class="text-tiny-section">The Wozmon tradition</div>
+
+        <p>
+        It has become a little tradition to port Wozmon to all the CPU projects
+        that I've created. Firstly, it was QMon (for the QCPU 2 project), and
+        then it was ZMon (for the Z80 family), and now, I introduce to you
+        6809Mon. I know; it's such an original name.
+        </p>
+
+        <p>
+        <a href="https://github.com/QSmally/6809Mon">6809Mon</a> is available
+        at address <code>0x8000</code> and takes up just over 256 bytes of
+        EEPROM space. Maybe when I'm a bit more familiar with the 6809, I'll be
+        able to fit it in the original size constraints.
+        </p>
+    </div>
+
+    <div class="sidebar list">
+        <img src="wozmon.jpg" alt="Wozmon for the 6809"/>
     </div>
 </div>
