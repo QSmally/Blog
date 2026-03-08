@@ -1,0 +1,148 @@
+
+<div class="two-column underlined">
+    <div class="content">
+        <div>
+            Most people find assembly (and machine language) to be scary. And I
+            get that. Today, we are all surrounded by languages and tools that
+            make the job easier. It allows us to not worry about tiny details,
+            because that's already been done a few times before. Honestly, for
+            most people, there is also no use for assembly given the type of
+            software (or firmware) they build. It results in long-winded
+            solutions which requires more convoluted work.
+        </div>
+
+        <p class="text-tiny-section">Abstraction layers</p>
+
+        <p>
+        Assembly, however, seems to be more intimidating than it actually
+        should be. With all the abstractions that we have today, people tend to
+        forget the fundamentals of computing systems. Bytes, and such. Or never
+        even learned these fundamentals in the first place. Everything which
+        happens behind the scenes is considered stable magic. I think that is
+        awfully sad. Structually knowing how something works in each layer of
+        the system is the most wonderful thing about this field of work.
+        </p>
+
+        <p>
+        I began with binary and building CPUs in Minecraft many years ago.
+        Before I ever touched a line of C language, I programmed indivudal bits
+        of machine language into some torch ROM and had the CPU do simple
+        counting. It was not a comparable system to common microprocessors
+        (because it was a NISC, had two registers, no other memory, and no
+        ability to do loops or conditional execution), but for 8 year old me,
+        it was super exciting to see <em>something logical</em> work like
+        expected. And don't get me wrong, there are <em>so many</em> things
+        that I wish I'd know, or know better, but currently don't.  Modern
+        video processing is one of those things.
+        </p>
+
+        <p>
+        Writing assembly requires you to visualise the machine state and
+        imagine transfers of data from one register to the next. It involves
+        knowing exactly what an instruction does, its side effects, and the
+        correct order of operations to perform a useful task (for example,
+        knowing what operations you can or cannot do that clobber the flags
+        register before a branch, to save a few instructions; see line 17 in
+        the example below). Any abstraction above assembly will make the flags
+        register of the CPU invisible.
+        </p>
+
+        <p class="text-tiny-section">Do you trust your dependencies?</p>
+
+        <p>
+        Recently, I've been writing a little bit of TypeScript for work to
+        control the firmware of another device. It made me think about the
+        levels of abstraction that software depends on. It goes way further
+        than the super large <code>node_modules</code> directory that you can
+        quickly get, although that's pretty bad, too. The runtime of the
+        application probably uses lots of software from different vendors, too,
+        which accounts for processes like memory allocation, deallocation,
+        communication with the operating system, and the general reliability of
+        the application. Do you trust your interpreter?
+        </p>
+
+        <p>
+        Most software depends on the system C library, or libc, to provide
+        basic functions and interfaces to the kernel. It would be catastrophic
+        if libc's <code>malloc</code> was not optimised like glibc or musl is.
+        In any case, all applications today depends on the operating system to
+        host an environment which is suitable for the level of abstraction that
+        is used. And don't forget, that consists of a lot of different parts,
+        too. It is just assumed that all basic principles are well tested when
+        other applications runs on it. I would be impressed if Slack made a
+        release for bare metal (if only it wasn't Electron).
+        </p>
+
+        <p class="text-tiny-section">Modern complexity</p>
+
+        <p>
+        I'd say that writing assembly in abstracted environments, so constained
+        to an underlying operating system, is far more scary. Everything about
+        computing systems has grown, such as speed, execution, caching, and
+        input/output control. For one, a simple read from memory goes through
+        layers of caches and block operations. In contrast with 50 years ago,
+        you can directly monitor the bus because you control components
+        directly.
+        </p>
+
+        <p>
+        The scale of demand has also become enormous. Some time ago, pong was
+        the most innovative videogame there was. You could change the video
+        output by changing a bitmap in memory. Now, there are shaders and
+        realistic physics. There is so much more processing time necessary.
+        </p>
+    </div>
+</div>
+
+<div class="two-column underlined">
+    <div class="content">
+        <div class="text-tiny-section">An intricate example</div>
+
+        <p>
+        A funny example of 'scary assembly' that I recently wrote was in
+        <a href="https://github.com/QSmally/ZOS/commit/274fda17cb862fbafee652b74d8153507df9bef0#diff-564883f49fc6a57d8f7649d355cf54f10f5bd3ad70df3a45814158f4776dd4bcR2">this commit</a>
+        in ZOS. The ZOS project is an <a href="/posts/z80">operating system for the Z80</a>.
+        It's just the microprocessor, some input/output, wiring, and myself.
+        </p>
+
+        <p>
+        In the snippet, a dictionary is traversed which is used to find an
+        instruction address given a command. Register <code>hl</code> is used
+        as the search string pointer, and <code>ix</code> for the dictionary
+        pointer. In order to make this work, the search string pointer is
+        repeatedly compared with the keys of the dictionary until an equal is
+        found. Either a zero or non-zero flag is used to indicate a match,
+        with register <code>ix</code> pointing to the value of the dictionary
+        when found/non-zero.
+        </p>
+
+        <p>
+        Firstly, you may find it odd that the entrypoint of the subroutine
+        <code>map_find</code> is in the middle of the assembly block. This
+        allows control flow to travel into it without any additional jump
+        instructions. The search pointer <code>hl</code> is stored onto the
+        stack because it needs to be reset on each search. As the Z80 doesn't
+        have a stack peek instruction, it is popped (line 22) from the stack
+        and pushed (line 23) back onto it.
+        </p>
+
+        <p>
+        Subsequently, a load from the dictionary pointer <code>ix</code> is
+        done to check if the dictionary has reached the end with a termination
+        byte. A load instruction doesn't affect any flags, so the instruction
+        <code>or 0</code> is used to route the accumulator through the ALU to
+        register the zero flag. After <code>streq</code> is called (conveniently
+        using the same pointer registers), its result is checked.
+        <code>streq</code> modifies the registers as a side effect, and the
+        <code>ix</code> register needs to seek its next dictionary key if it
+        was not equal (from line 16). Otherwise, the next address of
+        <code>ix</code> points to the value after the string termination byte
+        (line 29). An <code>or 1</code> instruction (line 30) resets the zero
+        flag which is used in the return contract of the subroutine.
+        </p>
+    </div>
+
+    <div class="sidebar list">
+        <a href="zos_map_find.jpg" target="_blank"><img src="zos_map_find.jpg" alt="ZOS stdlib map_find subroutine"/></a>
+    </div>
+</div>

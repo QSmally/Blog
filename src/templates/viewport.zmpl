@@ -20,6 +20,10 @@
     <meta property="description" content="{{context.description}}"/>
     <meta name="keywords"        content="qsmally, joey, smalen"/>
     <meta name="author"          content="© Joey Smalen"/>
+
+    @if (context.thumbnail != "")
+        <meta property="og:image" content="{{context.thumbnail}}"/>
+    @end
 </head>
 <body>
 

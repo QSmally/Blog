@@ -40,7 +40,7 @@
                 <div class="context">
                     <a class="text-subsection" href="/{{post.path}}">{{post.name}}</a>
                     <div class="text-subtext">{{post.title}}</div>
-                    <div class="text-subtext">{{post.last_change}}</div>
+                    <div class="text-subtext">{{post.created}}</div>
                     <p>{{post.description}}</p>
                 </div>
                 @if (post.get("thumbnail")) |thumbnail|
