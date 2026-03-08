@@ -20,7 +20,7 @@ pub const posts = [_]Post {
         .name = "Z80",
         .title = "Z84C00 breadboard project",
         .description = "System on a Breadboard (SoB)",
-        .last_change = "2026-01-15",
+        .last_change = "2026-03-08",
         .thumbnail = "posts/z80/dma-system.jpg",
         .path = "posts/z80" },
     .{

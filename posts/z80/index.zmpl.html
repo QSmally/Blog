@@ -192,3 +192,31 @@
         <img src="dma-memory.jpg" alt="DMA transfer depicted in ZMon"/>
     </div>
 </div>
+
+<div class="two-column underlined">
+    <div class="content">
+        <div class="text-subtext">2026-03-08</div>
+        <div class="text-tiny-section">The ZOS kernel</div>
+
+        <p>
+        Like I mentioned in the beginning of this thread, my goal is to create
+        an operating system for the Z80 breadboard project. Particularly, a
+        time-sharing kernel. <a href="https://github.com/QSmally/ZOS">The ZOS project</a>
+        is my attempt at it.
+        </p>
+
+        <p>
+        It's not much, currently, but I do have a simple shell to which I'm
+        able to jump to different programs such as <a href="https://github.com/QSmally/ZMon">ZMon</a>,
+        memcpy, and the binary loader. A stdlib with <code>map_find</code>,
+        <code>streq</code>, and I/O operations such as <code>echo</code>,
+        <code>echo_str</code>, and <code>echo_format_str</code> are available.
+        In the future, I'll be adding pre-emptive multitasking and a kernel
+        process interface to this project.
+        </p>
+    </div>
+
+    <div class="sidebar list">
+        <img src="zos.jpg" alt="ZOS"/>
+    </div>
+</div>
