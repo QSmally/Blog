@@ -29,13 +29,17 @@
 
 <!-- Page content -->
 <main>
-    <div class="container">
+    <article class="container">
         {{zmpl.content}}
-    </div>
+    </article>
 </main>
 
 <!-- Footer -->
 <footer>
+    <div>
+        <!-- Empty left side -->
+    </div>
+
     <div class="entity-bold">
         <a href="/privacy">&copy; <span id="year"></span> Joey Smalen</a>
     </div>

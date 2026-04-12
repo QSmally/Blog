@@ -1,0 +1,247 @@
+
+<div class="two-column underlined">
+    <section class="content">
+        <div>
+            A few months ago, I managed to snatch myself a Hitachi variant of
+            the Motorola 68000 microprocessor. It was completely unused and
+            still in a tube. Its manufacturing code <code>5D3</code> reveals
+            that this NMOS circuit was created in late April of 1985.
+        </div>
+
+        <p>
+        I reserved six breadboards for this project. Compared to the
+        <a href="/posts/z80">Z80 project</a>, which had just four, this is a
+        rather large increase. The 68000 is a 64 pin DIP which takes up the
+        majority of a breadboard. The layout I chose for this project, from top
+        to bottom, is (i) SRAMs and bus timeout counter, (ii) EEPROMs and
+        initial GAL decode logic, (iii) reset circuitry and (iii/iv) the 68000
+        spanning over two breadboards, (v) more decode logic, and lastly, (vi)
+        the I/O.
+        </p>
+
+        <!-- 28 x 16,5 cm -->
+
+        <p class="text-tiny-section">Part list</p>
+
+        <ul>
+            <li><a href="HD68000.pdf">HD68000 (NMOS, 8 MHz) 'M68k'</a></li>
+            <li><a href="MC6821.pdf">MC68B21 (NMOS, 2 MHz) 'PIA' (Peripheral Interface Adapter)</a></li>
+            <li><a href="MC6840.pdf">MC6840 (NMOS, 1 MHz) 'PTM' (Programmable Timer Module)</a></li>
+            <li><a href="MC6850.pdf">MC6850 (NMOS, 1 MHz) 'ACIA' (Asynchronous Communications Interface Adapter)</a></li>
+            <li><a href="PCF8584.pdf">PCF8584 (CMOS) I^2C Bus Controller</a></li>
+            <li><a href="PCF8583.pdf">PCF8583 (CMOS) I^2C Real-Time Clock</a></li>
+            <li><a href="W27C020.pdf">W27C020 (256 KiB) EEPROM</a></li>
+            <li><a href="AS6C4008-55PCN.pdf">AS6C4008 (512 KiB) SRAM</a></li>
+            <li><a href="MAX1232.pdf">MAX1232 Supervisor Circuit</a></li>
+            <li><a href="BC546.pdf">BC546 Transistor</a></li>
+            <li><a href="GAL16V8.pdf">GAL16V8A Programmable Logic Device</a></li>
+            <li><a href="sn74hcs238.pdf">SN74HC238N 3-to-8 Line Decoder</a></li>
+            <li><a href="sn74ls148.pdf">SN74LS148N 8-to-3 Priority Encoder</a></li>
+            <li><a href="sn74ls161a.pdf">SN74LS161AN Binary Counter</a></li>
+            <li><a href="sn74ls03.pdf">SN74LS03N NANDs (Open Collector)</a></li>
+            <li><a href="sn74ls04.pdf">SN74S04N Hex Inverters</a></li>
+            <li><a href="sn74ls22.pdf">SN7422N 4-Input NANDs (Open Collector)</a></li>
+            <li><a href="sn74ls32.pdf">SN74LS32N ORs</a></li>
+        </ul>
+
+        <p>
+        I'm using <a href="addrdec.pld">Generic Array Logic (GAL)</a> to
+        provide some of my address decoding logic. Without this, I would've
+        needed around 15 discrete ICs and lots more propagation delay to manage
+        this. Currently, it's down to 6 discrete ICs, and mostly being
+        open-collector or encoders/decoders. With the additional space, I was
+        able to add a bus timeout counter as well as an I2^C and Real Time
+        Clock (RTC) interface to the system.
+        </p>
+
+        <p class="text-tiny-section">Net list</p>
+
+        <p>
+        <table>
+            <thead>
+                <th>M68k</th> <th>W27C020</th> <th>AS6C4008</th> <th>MC6821</th> <th>MC6840</th> <th>MC6850</th> <th>Watchdog</th> <th>PCF8584</th>
+            </thead>
+            <tbody>
+                <tr> <td>A1</td>    <td>A0</td>         <td>A0</td>         <td>A0</td> <td>A0</td> <td>A0</td> <td>-</td>  <td>A0</td> </tr>
+                <tr> <td>A2</td>    <td>A1</td>         <td>A1</td>         <td>A1</td> <td>A1</td> <td>-</td>  <td>-</td>  <td>-</td>  </tr>
+                <tr> <td>A3</td>    <td>A2</td>         <td>A2</td>         <td>A2</td> <td>A2</td> <td>-</td>  <td>-</td>  <td>-</td>  </tr>
+                <tr> <td>A4</td>    <td>A3</td>         <td>A3</td>         <td>-</td>  <td>A3</td> <td>-</td>  <td>-</td>  <td>-</td>  </tr>
+                <tr> <td>A5</td>    <td>A4</td>         <td>A4</td>         <td>-</td>  <td>-</td>  <td>-</td>  <td>-</td>  <td>-</td>  </tr>
+                <tr> <td>A6</td>    <td>A5</td>         <td>A5</td>         <td>-</td>  <td>-</td>  <td>-</td>  <td>-</td>  <td>-</td>  </tr>
+                <tr> <td>A7</td>    <td>A6</td>         <td>A6</td>         <td>-</td>  <td>-</td>  <td>-</td>  <td>-</td>  <td>-</td>  </tr>
+                <tr> <td>A8</td>    <td>A7</td>         <td>A7</td>         <td>-</td>  <td>-</td>  <td>-</td>  <td>-</td>  <td>-</td>  </tr>
+                <tr> <td>A9</td>    <td>A8</td>         <td>A8</td>         <td>-</td>  <td>-</td>  <td>-</td>  <td>-</td>  <td>-</td>  </tr>
+                <tr> <td>A10</td>   <td>A9</td>         <td>A9</td>         <td>-</td>  <td>-</td>  <td>-</td>  <td>-</td>  <td>-</td>  </tr>
+                <tr> <td>A11</td>   <td>A10</td>        <td>A10</td>        <td>-</td>  <td>-</td>  <td>-</td>  <td>-</td>  <td>-</td>  </tr>
+                <tr> <td>A12</td>   <td>A11</td>        <td>A11</td>        <td>-</td>  <td>-</td>  <td>-</td>  <td>-</td>  <td>-</td>  </tr>
+                <tr> <td>A13</td>   <td>A12</td>        <td>A12</td>        <td>-</td>  <td>-</td>  <td>-</td>  <td>-</td>  <td>-</td>  </tr>
+                <tr> <td>A14</td>   <td>A13</td>        <td>A13</td>        <td>-</td>  <td>-</td>  <td>-</td>  <td>-</td>  <td>-</td>  </tr>
+                <tr> <td>A15</td>   <td>A14</td>        <td>A14</td>        <td>-</td>  <td>-</td>  <td>-</td>  <td>-</td>  <td>-</td>  </tr>
+                <tr> <td>A16</td>   <td>A15</td>        <td>A15</td>        <td>0</td>  <td>1</td>  <td>0</td>  <td>1</td>  <td>0</td>  </tr>
+                <tr> <td>A17</td>   <td>A16</td>        <td>A16</td>        <td>0</td>  <td>0</td>  <td>1</td>  <td>1</td>  <td>0</td>  </tr>
+                <tr> <td>A18</td>   <td>A17</td>        <td>A17</td>        <td>1</td>  <td>1</td>  <td>1</td>  <td>1</td>  <td>0</td>  </tr>
+                <tr> <td>A19</td>   <td>0</td>          <td>A18</td>        <td>1</td>  <td>1</td>  <td>1</td>  <td>1</td>  <td>1</td>  </tr>
+                <tr> <td>A20</td>   <td>0</td>          <td>1</td>          <td>0</td>  <td>0</td>  <td>0</td>  <td>0</td>  <td>0</td>  </tr>
+                <tr> <td>A21</td>   <td>0</td>          <td>0</td>          <td>0</td>  <td>0</td>  <td>0</td>  <td>0</td>  <td>0</td>  </tr>
+                <tr> <td>A22</td>   <td>0</td>          <td>0</td>          <td>0</td>  <td>0</td>  <td>0</td>  <td>0</td>  <td>0</td>  </tr>
+                <tr> <td>A23</td>   <td>0</td>          <td>0</td>          <td>0</td>  <td>0</td>  <td>0</td>  <td>0</td>  <td>0</td>  </tr>
+            </tbody>
+        </table>
+        </p>
+
+        <p>
+        Unlike the 6502, Z80, and 6809, this decode logic will exhaustively
+        address all relevant devices on the asynchronous part of the bus. This
+        is to accurately generate the <code>DTACK</code> signal and hang when
+        an address failed to be present on the bus. An 8-cycle counter provides
+        a timeout (bus error) signal when a device is not mapped or not
+        responding. This allows safe expansion of the system bus.
+        </p>
+
+        <p>
+        A watchdog timer is created with the MAX1232. An I/O operation on the
+        watchdog address functions as a strobe to the supervisory circuit. This
+        resets the CPU when the software doesn't regularly provide a
+        notification to the watchdog. The MAX1232 provides a power-on reset and
+        also functions as a voltage monitor because it will halt/reset the
+        68000 if it drops below 5% of 5V. There are three indicator LEDs:
+        </p>
+
+        <ul>
+            <li>Power applied (blue, left)</li>
+            <li>68000 is running (red, middle)</li>
+            <li>Voltage and strobe OK (red, right)</li>
+        </ul>
+
+        <p>
+        The difference between the two red LEDs is that the 68000 itself can
+        also halt the system. If that happens, only the middle LED turns off,
+        and both turn off when the voltage supply and strobe are bad. Normally,
+        all indicators should be active. There are also two buttons available:
+        </p>
+
+        <ul>
+            <li>Manual reset</li>
+            <li>Abort interrupt</li>
+        </ul>
+
+        <p>
+        The I/O space contains four possible synchronous peripherals. In the
+        synchronous 6800-family <code>VPA</code> range, the <code>-</code>
+        (dashes) indicate loosely decoded peripherals. Supervisor mode (FC2)
+        must be asserted in order to access I/O space, otherwise a bus error
+        is asserted; this way, only an operating system kernel can communicate
+        with peripherals. Additionally, the top 256 KiB of EEPROM and SRAM are
+        also supervisor protected.
+        </p>
+
+        <p class="text-tiny-section">Memory map</p>
+
+        <ul>
+            <li><code>000000 - 03FFFF : </code>EEPROM (256k)</li>
+            <li><code>040000 - 07FFFF : </code>EEPROM (256k) (supervisor protected)</li>
+            <li><code>080000 - 0FFFFF : </code>I/O (supervisor protected)</li>
+            <li><code>100000 - 1BFFFF : </code>SRAM (768k)</li>
+            <li><code>1C0000 - 1FFFFF : </code>SRAM (256k) (supervisor protected)</li>
+            <li><code>200000 - 2FFFFF : </code>System expansion slot 0</li>
+            <li><code>300000 - FFFFFF : </code>System expansion</li>
+        </ul>
+
+        <p>The following I/O devices are mapped in the I/O space:</p>
+
+        <ul>
+            <li><code>080000 : </code>PCF8584 I^2C</li>
+            <li><code>090000 : </code>Unmapped</li>
+            <li><code>0A0000 : </code>Unmapped</li>
+            <li><code>0B0000 : </code>Unmapped</li>
+            <li><code>0C0000 : </code>MC6821 PIA (VPA range)</li>
+            <li><code>0D0000 : </code>MC6840 PTM (VPA range)</li>
+            <li><code>0E0000 : </code>MC6850 ACIA (VPA range)</li>
+            <li><code>0F0000 : </code>MAX1232 Watchdog (VPA range)</li>
+        </ul>
+
+        <p>The following I/O priorities are used:</p>
+
+        <ol>
+            <li>MC6821 PORT A (lowest priority)</li>
+            <li>PCF8584 I^2C MASTER</li>
+            <li>MC6821 PORT B</li>
+            <li>MC6850 ACIA</li>
+            <li>MC6840 PTM</li>
+            <li>PCF8583 I^2C ALARM</li>
+            <li>Abort (highest priority, non-maskable)</li>
+        </ol>
+    </section>
+
+    <div class="sidebar list">
+        <a href="thumbnail.jpg" target="_blank"><img src="thumbnail.jpg" alt="68000 breadboard computer"/></a>
+    </div>
+</div>
+
+<div class="two-column underlined">
+    <section class="content">
+        <div class="text-subtext">just an idea</div>
+        <div class="text-tiny-section">Theoretical multiprocessor model</div>
+
+        <p>
+        By far, this 68000 system has been the most complex broadboard project
+        that I've done as of now. Thankfully the GAL has simplified the use of
+        discrete logic and enables the multiple bus error logic conditions.
+        </p>
+
+        <p>
+        Given that the 68000 has a 24 bit address bus, and an asynchronous
+        <code>DTACK</code> is used to terminate a bus cycle, an idea came to
+        mind. It is possible to allow the 68000 to hook into another system's
+        16 bit system bus like some kind of DMA (and unlike the 6502, even bus
+        request architectures like the Z80). A couple of line drivers for the
+        address will be necessary, together with a transceiver for data and a
+        tiny bit of logic to handle requesting the bus and propagating
+        <code>DTACK</code> at the right time (and also masking the bus timeout
+        counter, if necessary). This way, the 68000 can address a completely
+        different secondary system and write into its memory to assign tasks.
+        </p>
+
+        <p>
+        This 68000 system is quite expandable. The GAL already decodes
+        'expansion slot 0' due to free space on the decoder, which allows other
+        peripherals to just hook into the system. If an unmapped address is
+        referred to, the bus timeout counter will generate a bus error.
+        </p>
+    </section>
+</div>
+
+<div class="two-column underlined">
+    <section class="content">
+        <div class="text-subtext">behind the scenes</div>
+        <div class="text-tiny-section">A double bus fault</div>
+
+        <p>
+        Whilst wiring the control logic of the 68000 system, I performed a test
+        to see if the chip enables function correctly, with zeros (effectively
+        NOPs) bound to the data bus. I expected to see a bus timeout and error
+        being generated when the address overflows to I/O space, as there is no
+        automatic <code>DTACK</code> generation for I/O (and <code>VPA</code>
+        is only asserted in the latter half of I/O space).
+        </p>
+
+        <p>
+        In the waveform, you can see just that: after EEPROM bus cycles, an I/O
+        bus cycle is asserted. A bus timeout is generated which results in the
+        bus cycle being terminated. However, remembering that I wired the data
+        bus to zeros, I did not think through that handling the exception would
+        write to a pre-decremented stack address (with 0 underflowing to
+        <em>unmapped memory</em> at address <code>0xFFFFFF</code>). A bus
+        timeout was asserted again, resulting in a double bus fault and the
+        68000 halting.
+        </p>
+
+        <p>
+        It was unexpected, but very correct!
+        </p>
+    </section>
+
+    <div class="sidebar list">
+        <a href="double-bus-fault.png" target="_blank"><img src="double-bus-fault.png" alt="Waveform double bus fault"/></a>
+    </div>
+</div>

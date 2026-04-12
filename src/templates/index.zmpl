@@ -1,5 +1,5 @@
-<div class="two-column">
-    <div class="content">
+<article class="two-column">
+    <section class="content">
         <a class="text-section" href="/home">Smally's blog</a>
 
         <p>
@@ -30,7 +30,7 @@
             The repository of this blog is maintained on
             <a href="/mirror">Github</a>.
         </p>
-    </div>
+    </section>
 
     <div class="sidebar list">
         <div class="text-tiny-section">Posts</div>
@@ -51,4 +51,4 @@
             </div>
         }
     </div>
-</div>
+</article>

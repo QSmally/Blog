@@ -1,0 +1,25 @@
+
+
+ Pin # | Name     | Pin Type
+-----------------------------
+   1   | A23      | Input
+   2   | A22      | Input
+   3   | A21      | Input
+   4   | A20      | Input
+   5   | A19      | Input
+   6   | A18      | Input
+   7   | AS       | Input
+   8   | FC2      | Input
+   9   | RW       | Input
+  10   | GND      | GND
+  11   | TO       | Input
+  12   | TR       | Output
+  13   | BEI      | Input
+  14   | BERR     | Output
+  15   | SRAMCE   | Output
+  16   | EEPROMCE | Output
+  17   | RD       | Output
+  18   | E0       | Output
+  19   | IOCE     | Output
+  20   | VCC      | VCC
+

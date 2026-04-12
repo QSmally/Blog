@@ -1,0 +1,62 @@
+GAL16V8
+addrdec
+
+
+A23 A22 A21 A20  A19    A18      AS FC2 RW   GND
+TO  TR  BEI BERR SRAMCE EEPROMCE RD E0  IOCE VCC
+
+
+
+
+
+/BERR =   /AS * /BEI                                          ; Bus error input
+        + /AS * /TO                                           ; Timeout
+        + /AS * /A23 * /A22 * /A21 * /A20 * /A19 * /RW        ; EEPROM CE, write
+        + /AS * /A23 * /A22 * /A21 * /A20 * /A19 * A18 * /FC2 ; EEPROM CE, no FC2
+        + /AS * /A23 * /A22 * /A21 * A20 * A19 * A18 * /FC2   ; SRAM CE, no FC2
+        + /AS * /A23 * /A22 * /A21 * /A20 * A19 * /FC2        ; I/O CE, no FC2
+
+/TR =   AS                                                    ; No address strobe
+      + IOCE * A18                                            ; VPA address (sync)
+
+/EEPROMCE =   /AS * /A23 * /A22 * /A21 * /A20 * /A19 * /A18 * RW
+            + /AS * /A23 * /A22 * /A21 * /A20 * /A19 * A18 * RW * FC2
+
+/SRAMCE =   /AS * /A23 * /A22 * /A21 * A20 * /A19 * /A18
+          + /AS * /A23 * /A22 * /A21 * A20 * /A19 * A18
+          + /AS * /A23 * /A22 * /A21 * A20 * A19 * /A18
+          + /AS * /A23 * /A22 * /A21 * A20 * A19 * A18 * FC2
+
+IOCE = /AS * /A23 * /A22 * /A21 * /A20 * A19 * FC2
+
+/E0 = /AS * /A23 * /A22 * A21 * /A20
+
+RD = /RW
+
+
+
+
+
+DESCRIPTION
+
+M68k breadboard system
+
+Address decoding logic:
+
+- A23 A22 A21 A20 A19 A18: upper address
+
+- /AS: address strobe
+- FC2: function code (bit 2, supervisor mode bit)
+- /RW: read/write
+
+- /TO: timer timeout
+- /TR: timer reset (output)
+
+- /BEI: bus error in
+- /BERR: generate bus error (output)
+
+- IOCE: I/O enable (output)
+- /E0: expansion address 0 (output)
+- /RD: read enable (output)
+- /SRAMCE: SRAM enable (output)
+- /EEPROMCE: EEPROM enable (output)

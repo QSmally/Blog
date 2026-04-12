@@ -11,6 +11,14 @@ path: []const u8 = "",
 
 pub const posts = [_]Post {
     .{
+        .name = "68000",
+        .title = "HD68000 breadboard project",
+        .description = "The microprocessor ahead of its time",
+        .created = "2026-04-12",
+        .last_change = "2026-04-12",
+        .thumbnail = "posts/m68k/thumbnail.jpg",
+        .path = "posts/m68k" },
+    .{
         .name = "Assembly",
         .title = "The take on assembly",
         .description = "Scariness of assembly, and different levels of computing systems",
