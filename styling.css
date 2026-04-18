@@ -33,8 +33,12 @@ main {
     flex: 1;
 }
 
-img {
+img, video {
     max-width: 75vw;
+}
+
+video {
+    width: 100%;
 }
 
 .container {
@@ -60,7 +64,7 @@ img {
     margin: 50px 20px;
 }
 
-.content img {
+.content img, .content video {
     padding: 24px 50px;
 }
 
@@ -72,7 +76,7 @@ img {
     margin: 50px 20px;
 }
 
-.sidebar img {
+.sidebar img, .sidebar video {
     max-width: 300px;
 }
 

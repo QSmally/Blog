@@ -15,7 +15,7 @@ pub const posts = [_]Post {
         .title = "HD68000 breadboard project",
         .description = "The microprocessor ahead of its time",
         .created = "2026-04-12",
-        .last_change = "2026-04-12",
+        .last_change = "2026-04-18",
         .thumbnail = "posts/m68k/thumbnail.jpg",
         .path = "posts/m68k" },
     .{

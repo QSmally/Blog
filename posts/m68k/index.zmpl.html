@@ -1,5 +1,5 @@
 
-<div class="two-column underlined">
+<section class="two-column underlined">
     <section class="content">
         <div>
             A few months ago, I managed to snatch myself a Hitachi variant of
@@ -175,10 +175,11 @@
 
     <div class="sidebar list">
         <a href="thumbnail.jpg" target="_blank"><img src="thumbnail.jpg" alt="68000 breadboard computer"/></a>
+        <a href="addrdec.jpg" target="_blank"><img src="addrdec.jpg" alt="GAL address decoding"/></a>
     </div>
-</div>
+</section>
 
-<div class="two-column underlined">
+<section class="two-column underlined">
     <section class="content">
         <div class="text-subtext">just an idea</div>
         <div class="text-tiny-section">Theoretical multiprocessor model</div>
@@ -209,9 +210,9 @@
         referred to, the bus timeout counter will generate a bus error.
         </p>
     </section>
-</div>
+</section>
 
-<div class="two-column underlined">
+<section class="two-column underlined">
     <section class="content">
         <div class="text-subtext">behind the scenes</div>
         <div class="text-tiny-section">A double bus fault</div>
@@ -244,4 +245,31 @@
     <div class="sidebar list">
         <a href="double-bus-fault.png" target="_blank"><img src="double-bus-fault.png" alt="Waveform double bus fault"/></a>
     </div>
-</div>
+</section>
+
+<section class="two-column underlined">
+    <section class="content">
+        <div class="text-subtext">2026-04-18</div>
+        <div class="text-tiny-section">Wozmon, Wozify and Hello World</div>
+
+        <p>
+        It is no surprise that I ported Wozmon, originally made by Steve
+        Wozniak in 1976, to the 68000 system. <a href="https://github.com/QSmally/M68kMon">This Wozmon</a>
+        is 362 bytes in size, and given the large instruction set of the 68000,
+        I don't think it can be narrowed down to the original size. It includes
+        very basic bus error/exception handling.
+        </p>
+
+        <p>
+        In order to upload programs through Wozmon, I created
+        <a href="https://github.com/QSmally/Wozify">Wozify</a>. It's a trivial
+        executable that converts a binary file into Wozmon store operations. I
+        can immediately pipe the output to the serial port and run it in
+        Wozmon.
+        </p>
+    </section>
+
+    <div class="sidebar list">
+        <a href="hello-world.mov" target="_blank"><video autoplay loop muted><source src="hello-world.mov" type="video/mp4" alt="68000 hello world"/></video></a>
+    </div>
+</section>
