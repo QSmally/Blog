@@ -22,7 +22,7 @@
     <meta name="author"          content="© Joey Smalen"/>
 
     @if (context.thumbnail != "")
-        <meta property="og:image" content="{{context.thumbnail}}"/>
+        <meta name="og:image" content="{{context.thumbnail}}"/>
     @end
 </head>
 <body>

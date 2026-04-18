@@ -19,7 +19,9 @@
         the I/O.
         </p>
 
-        <!-- 28 x 16,5 cm -->
+        <p>
+        <a href="schematic.pdf">A schematic</a> of the system is available.
+        </p>
 
         <p class="text-tiny-section">Part list</p>
 
@@ -46,12 +48,12 @@
 
         <p>
         I'm using <a href="addrdec.pld">Generic Array Logic (GAL)</a> to
-        provide some of my address decoding logic. Without this, I would've
-        needed around 15 discrete ICs and lots more propagation delay to manage
-        this. Currently, it's down to 6 discrete ICs, and mostly being
-        open-collector or encoders/decoders. With the additional space, I was
-        able to add a bus timeout counter as well as an I2^C and Real Time
-        Clock (RTC) interface to the system.
+        provide some of my address decoding logic, assembled using <a href="https://github.com/daveho/GALasm">GALasm</a>.
+        Without this, I would've needed around 15 discrete ICs and lots more
+        propagation delay to manage this. Currently, it's down to 6 discrete
+        ICs, and mostly being open-collector or encoders/decoders. With the
+        additional space, I was able to add a bus timeout counter as well as an
+        I2^C and Real Time Clock (RTC) interface to the system.
         </p>
 
         <p class="text-tiny-section">Net list</p>
@@ -176,6 +178,7 @@
     <div class="sidebar list">
         <a href="thumbnail.jpg" target="_blank"><img src="thumbnail.jpg" alt="68000 breadboard computer"/></a>
         <a href="addrdec.jpg" target="_blank"><img src="addrdec.jpg" alt="GAL address decoding"/></a>
+        <a href="schematic.pdf" target="_blank"><embed src="schematic.pdf" alt="Schematic"/></a>
     </div>
 </section>
 

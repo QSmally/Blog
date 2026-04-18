@@ -35,9 +35,6 @@ main {
 
 img, video {
     max-width: 75vw;
-}
-
-video {
     width: 100%;
 }
 
