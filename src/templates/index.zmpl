@@ -3,52 +3,55 @@
         <a class="text-section" href="/home">Smally's blog</a>
 
         <p>
-            This is a blog stream page that I try to maintain. I mostly write
-            about (side) projects or anything interesting. I put together a
-            static site generator using the <a href="https://github.com/jetzig-framework/zmpl">Zmpl</a>
-            templating engine with Zig. Posts that I create are shown on the
-            sidebar or below depending on the size of your viewport. For some
-            posts, new things and updates will be added which is (probably)
-            mentioned at the start of the post.
+        This is my blog where I occasionally post interesting stuff, random
+        thoughts, and projects that I make.
         </p>
 
         <p>
-            This server also aims to include all the files I reference,
-            such as datasheets, if licensing allows for distribution.
-            In that case, all rights are reserved to the people and all
-            that. I'd appreciate it that information or pictures from
-            me will be cited to their respective hyperlinks.
+        This server also aims to include all the files I reference, such as
+        datasheets. All rights are reserved to the original authors and all
+        that. I'd appreciate it that information or pictures from me will be
+        cited to their respective hyperlinks.
         </p>
 
         <p>
-            Some of my posts expire when I feel like it. Filter on
-            <code>Posts</code> in the repository's commit log to see historical
-            changes.
+        The repository of this blog is maintained on <a href="/mirror">GitHub</a>.
         </p>
 
-        <p>
-            The repository of this blog is maintained on
-            <a href="/mirror">Github</a>.
-        </p>
+        <p class="text-subsection">Posts</p>
+
+        <ul>
+            @zig {
+                for (@TypeOf(context).posts) |post| {
+                    if (post.visibility == .invisible)
+                        continue;
+                    <li>
+                        <a href="/{{post.path}}"><code>{{post.created}} </code> {{post.title}}</a>
+                    </li>
+                }
+            }
+        </ul>
     </section>
 
     <div class="sidebar list">
-        <div class="text-tiny-section">Posts</div>
+        <div class="text-tiny-section">Featured</div>
 
-        @for ($.posts) |post| {
-            <div class="two-column">
-                <div class="context">
-                    <a class="text-subsection" href="/{{post.path}}">{{post.name}}</a>
-                    <div class="text-subtext">{{post.title}}</div>
-                    <div class="text-subtext">{{post.created}}</div>
-                    <p>{{post.description}}</p>
+        @zig {
+            for (@TypeOf(context).posts) |post| {
+                if (post.visibility != .featured)
+                    continue;
+                <div class="two-column">
+                    <div class="context">
+                        <a class="text-subsection" href="/{{post.path}}">{{post.name}}</a>
+                        <div class="text-subtext">{{post.title}}</div>
+                        <div class="text-subtext">{{post.created}}</div>
+                        <p>{{post.description}}</p>
+                    </div>
+                    if (post.thumbnail.len > 0) {
+                        <a href="/{{post.path}}"><img class="thumbnail" src="/{{post.thumbnail}}" alt="{{post.title}}"/></a>
+                    }
                 </div>
-                @if (post.get("thumbnail")) |thumbnail|
-                    @if (thumbnail != "")
-                        <img class="thumbnail" src="/{{thumbnail}}" alt="{{post.title}}"/>
-                    @end
-                @end
-            </div>
+            }
         }
     </div>
 </article>
