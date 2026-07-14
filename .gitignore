@@ -8,6 +8,7 @@ Session.vim
 
 # Zig
 zig-out
+zig-pkg
 .zig-cache
 
 # Generated HTML files
