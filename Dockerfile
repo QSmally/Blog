@@ -1,7 +1,7 @@
 
 FROM nginx:alpine AS compiler
 
-ARG VERSION=0.14.1
+ARG VERSION=0.16.0
 
 RUN apk update && apk add curl tar xz
 
