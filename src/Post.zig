@@ -12,6 +12,13 @@ path: []const u8 = "",
 
 pub const posts = [_]Post {
     .{
+        .name = "QCPU 2",
+        .title = "Philosophy of the QCPU 2 architecture",
+        .description = "A 16 bit RISC microprocessor architecture",
+        .created = "2026-08-16",
+        .last_change = "2026-08-16",
+        .path = "posts/qcpu" },
+    .{
         .name = "68000",
         .title = "HD68000 breadboard project",
         .description = "The microprocessor ahead of its time",
@@ -23,14 +30,15 @@ pub const posts = [_]Post {
         .name = "Assembly",
         .title = "The take on assembly",
         .description = "Scariness of assembly, and different levels of computing systems",
+        .visibility = .visible,
         .created = "2026-03-08",
         .last_change = "2026-03-08",
         .path = "posts/assembly" },
     .{
         .name = "6809",
         .title = "MC6809 breadboard project",
-        .visibility = .visible,
         .description = "some information here",
+        .visibility = .visible,
         .created = "2026-02-04",
         .last_change = "2026-03-02",
         .thumbnail = "posts/6809/thumbnail.jpg",
@@ -39,6 +47,7 @@ pub const posts = [_]Post {
         .name = "Z80",
         .title = "Z84C00 breadboard project",
         .description = "System on a Breadboard (SoB)",
+        .visibility = .visible,
         .created = "2025-12-30",
         .last_change = "2026-03-08",
         .thumbnail = "posts/z80/dma-system.jpg",

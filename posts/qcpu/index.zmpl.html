@@ -1,0 +1,204 @@
+
+<section class="two-column underlined">
+    <section class="content">
+        <div>
+            In 2020, the <a href="https://qcpu.qsmally.org/old/video">QCPU 1 microprocessor</a>
+            model was created in Minecraft. It is featured in the <a href="https://openredstone.org">Open Redstone organisation</a>.
+            It was a stepping stone to QCPU 2, which is being made on silicon, for power-efficient
+            microcontrollers. It aims to be an extensible open standard for advanced
+            microcontrollers and alike systems with native support for privilege modes and virtual
+            memory.
+        </div>
+
+        <p>
+        The QCPU 2 microprocessor is a 16 bit RISC architecture with fixed-length instructions,
+        inspired by RISC-V and the Motorola 68000. It features a classic five stage pipeline.
+        Structurally, the CPU consists of:
+        </p>
+
+        <!-- Deterministic 16 bit hardware. -->
+        <!-- Each instruction uses the ALU and/or memory system once or none. -->
+        <!-- 68000 design philosophy but pushing it to RISC(-V) format. -->
+
+        <ul>
+            <li>8 Data Registers (DRs) (including zero register)</li>
+            <li>8 Address Registers (ARs) (including zero register)</li>
+            <li>Control & Status Registers (CSRs), including:</li>
+            <ul>
+                <li>System information (e.g. hart)</li>
+                <li>System control (e.g. features, clock time base)</li>
+                <li>Flag register</li>
+                <li>Interrupt control</li>
+                <li>Virtual memory control</li>
+            </ul>
+            <li>Branch Target Buffer (BTB)</li>
+            <li>Translation Look-Aside Buffer (TLB)</li>
+            <li>Arithmetic Logic Unit (ALU)</li>
+            <li>Barrel Shifter (BS)</li>
+            <li>Address Register comparators (i.e. over-/underflow exceptions, stack boundaries)</li>
+            <li>Asynchronous memory instructions (i.e. scoreboarding)</li>
+            <li>Atomic memory instructions</li>
+            <li>Timer</li>
+        </ul>
+
+        <p>
+        This blog post aims to explain the architecture and the rationale behind certain design
+        decisions. The QCPU 2 architecture is <a href="https://qcpu.qsmally.org">documented on its
+        own web address</a>. Please note that the QCPU 2 architecture is still being researched,
+        designed, and developed, and may still change over time.
+        </p>
+
+        <p class="text-tiny-section">Programming model</p>
+
+        <p>
+        Fundamentally, the programming model of the QCPU 2 architecture consists of three typed
+        register domains:
+        </p>
+
+        <ul>
+            <li>Data Registers</li>
+            <li>Address Registers</li>
+            <li>Machine-State Registers (CSRs)</li>
+        </ul>
+
+        <p>
+        Data Registers are fully general-purpose. Address Registers are partially special-purpose
+        (i.e. the instruction pointer) and contain reserved purposes as well (i.e. the frame
+        pointer). Control & Status Registers cannot be addressed in normal operation and are limited
+        to kernel mode as well.
+        </p>
+
+        <p>
+        <table>
+            <thead>
+                <th>Domain</th> <th>Register</th> <th>Identifier</th>
+            </thead>
+            <tbody>
+                <tr> <td>Data Register</td>         <td><code>r0<code></td>     <td><strong>zr</strong> (zero)</td>             </tr>
+                <tr> <td>Data Register/Async</td>   <td><code>r1<code></td>     <td><strong>d1</strong></td>                    </tr>
+                <tr> <td>Data Register/Async</td>   <td><code>r2<code></td>     <td><strong>d2</strong></td>                    </tr>
+                <tr> <td>Data Register/Async</td>   <td><code>r3<code></td>     <td><strong>d3</strong></td>                    </tr>
+                <tr> <td>Data Register/Async</td>   <td><code>r4<code></td>     <td><strong>d4</strong></td>                    </tr>
+                <tr> <td>Data Register/Async</td>   <td><code>r5<code></td>     <td><strong>d5</strong></td>                    </tr>
+                <tr> <td>Data Register/Async</td>   <td><code>r6<code></td>     <td><strong>d6</strong></td>                    </tr>
+                <tr> <td>Data Register/Async</td>   <td><code>r7<code></td>     <td><strong>d7</strong></td>                    </tr>
+                <tr> <td>Address Register</td>      <td><code>r8<code></td>     <td><strong>zr</strong> (zero)</td>             </tr>
+                <tr> <td>Address Register</td>      <td><code>r9<code></td>     <td><strong>ip</strong> (instruction ptr)</td>  </tr>
+                <tr> <td>Address Register</td>      <td><code>r10<code></td>    <td><strong>rp</strong> (return ptr)</td>       </tr>
+                <tr> <td>Address Register</td>      <td><code>r11<code></td>    <td><strong>sp</strong> (stack ptr)</td>        </tr>
+                <tr> <td>Address Register</td>      <td><code>r12<code></td>    <td><strong>fp</strong> (frame ptr)</td>        </tr>
+                <tr> <td>Address Register</td>      <td><code>r13<code></td>    <td><strong>a1</strong></td>                    </tr>
+                <tr> <td>Address Register</td>      <td><code>r14<code></td>    <td><strong>a2</strong></td>                    </tr>
+                <tr> <td>Address Register</td>      <td><code>r15<code></td>    <td><strong>a3</strong></td>                    </tr>
+            </tbody>
+        </table>
+        </p>
+
+        <p>
+        The zero register is a small but powerful feature in the architecture. Firstly, it enables
+        simple primitive operations to be done for multiple motives due to a statically-known source
+        operand. For example, register-to-register move operations are pseudoinstructions for
+        addition with zero. Similarly, the set-one-if-negative <code>sneg</code> pseudoinstruction
+        is composed of the set-one-if-less-than <code>slt</code> instruction with zero.
+        Secondly, results of operations may be discarded by writing into the zero register, having
+        no architectural effect other than the flag register or other side effects, such as cache
+        behaviour. This is most evident in the prefetch data <code>prfd</code> pseudoinstruction,
+        which is composed of a memory move into the zero register.
+        </p>
+
+        <p>
+        QCPU 2 deliberately divides the computational data domain with the computational address
+        domain to provide a couple of benefits. Firstly, a second set of general-purpose registers
+        increases the total system registers whilst keeping the operand bit size the same for
+        operations on DRs. For a subset of operations, ARs may be used. Data can be transferred
+        freely between DRs and ARs. Secondly, with the introduction of ARs, the CPU contextualises
+        the address domain.
+        Special-purpose registers of the CPU are collapsed into the ARs where primitive address
+        arithmetic of the ISA can be used rather than special control flow introduced into the ISA.
+        QCPU 2 has a striking absence of these special instructions.
+        For example, for the instruction pointer <code>ip</code>, a relative jump is performed with
+        an add-immediate <code>addi ip, imm</code> instruction on the instruction pointer.
+        Once addresses have their own register domain, architectural features may differ from
+        operations on DRs and include special semantics. For example, operations which overflow ARs
+        may emit hardware exceptions, which is not always desirable for DRs due to the lack of
+        informational context by the CPU in traditional programming models.
+        </p>
+
+        <p>
+        Generally, QCPU 2's design philosophy prioritises simple and reusable primitives rather than
+        specialised instructions. This has been discussed regarding the instruction pointer.
+        However, this can also be seen with the stack pointer <code>sp</code>. The ISA does not
+        implement push, pop or peek instructions, as the CPU itself mostly disregards the stack as
+        an architectural feature (except for the CSR-configurable low/high boundaries of the stack
+        pointer AR). Instead, memory move primitives are used. These <code>move</code> instructions
+        contain various addressing modes such as predecrement (push), postincrement (pop), and
+        static offsets (peek). This allows these instructions to be reused for generic memory
+        operations and arrays as well.
+        </p>
+
+        <p class="text-tiny-section">CSRs and MMIO in SMP</p>
+
+        <p>
+        An undiscussed register domain are the Machine-State Registers. These CSRs reflect the
+        internal state and configuration of the CPU. The flag register, for example, can be read
+        from and written to as a CSR for use in interrupt context switches. Additionally, features
+        of the CPU can be enabled or disabled. These features are:
+        </p>
+
+        <ul>
+            <li>Kernel protection active</li>
+            <li>Branch Target Buffer active</li>
+            <li>Asynchronous memory active (as opposed to fully synchronous)</li>
+            <li>Interrupts</li>
+        </ul>
+
+        <p>
+        Features such as the BTB consume more energy, and it may be preferred to substitute it for a
+        loss in performance. As a last example, the clock-time-base <code>ctb</code> CSR allows the
+        CPU to determine its own clock speed.
+        </p>
+
+        <p>
+        In a Symmetric Multiprocessing (SMP) system, each CPU has its own CSRs. Each CPU is
+        configured individually through these CSRs. Memory is used for CPUs to communicate with each
+        other. In the same manner, access to the same devices in an SMP system is done through
+        Memory-Mapped I/O (MMIO), which uses the same memory move primitives as seen before. The
+        ISA adds instructions such as <code>fence</code> and atomic exchange <code>xch</code> to
+        allow synchronisation between these CPUs.
+        </p>
+
+        <p>
+        For interrupts, they can be configured on both a local and global level. Individual CPUs can
+        enable or disable the reception of certain interrupts. The I/O-mapped global interrupter
+        routes platform-level interrupts to available CPUs. However, local interrupts such as the
+        CPU timer, address faults, and memory faults are not managed by the global interrupter.
+        </p>
+
+        <p class="text-tiny-section">Privilege levels</p>
+
+        <p>
+        Perhaps the most distinct architectural feature of the QCPU 2 microprocessor is its approach
+        on privilege levels.</p>
+
+        <p>
+        The CPU does not hold the privilege level as an architectural state. Instead, the location
+        of the instruction pointer determines the effective privilege level. In virtual memory, a
+        kernel region is created above an address watermark. Entering this kernel region from
+        userland emits a hardware exception. It is only possible to enter predefined locations in
+        the kernel region through interrupts and system calls. The effective privilege level is
+        implicitly demoted once the instruction pointer leaves the kernel region.
+        </p>
+
+        <p>
+        The discussed design provides one main advantage in safety. Memory ownership determines the 
+        effective privilege level of the CPU. This reduces the attack surface of diverted control
+        flow from within kernel mode to unauthorised text sections in userland.
+        </p>
+    </section>
+
+    <!--
+    <div class="sidebar list">
+        <a href="thumbnail.jpg" target="_blank"><img src="thumbnail.jpg" alt="QCPU 2"/></a>
+    </div>
+    -->
+</section>

@@ -142,6 +142,11 @@ p, ul, ol, table {
     padding-top: 24px;
 }
 
+ul > ul {
+    padding-top: 0px;
+    padding-left: 24px;
+}
+
 /* Text style */
 
 .text-section {
