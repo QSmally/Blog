@@ -12,13 +12,11 @@
 
         <p>
         The QCPU 2 microprocessor is a 16 bit RISC architecture with fixed-length instructions,
-        inspired by RISC-V and the Motorola 68000. It features a classic five stage pipeline.
-        Structurally, the CPU consists of:
+        inspired by RISC-V as well as few features of the Motorola 68000 design philosophy. It
+        features a classic five stage pipeline. Each instruction strictly uses the ALU and/or memory
+        system once to reduce complexity and to run on deterministic, 16 bit hardware. Structurally,
+        the CPU consists of:
         </p>
-
-        <!-- Deterministic 16 bit hardware. -->
-        <!-- Each instruction uses the ALU and/or memory system once or none. -->
-        <!-- 68000 design philosophy but pushing it to RISC(-V) format. -->
 
         <ul>
             <li>8 Data Registers (DRs) (including zero register)</li>
@@ -43,8 +41,8 @@
 
         <p>
         This blog post aims to explain the architecture and the rationale behind certain design
-        decisions. The QCPU 2 architecture is <a href="https://qcpu.qsmally.org">documented on its
-        own web address</a>. Please note that the QCPU 2 architecture is still being researched,
+        decisions. <a href="https://qcpu.qsmally.org">The QCPU 2 architecture is documented on its
+        own web page</a>. Please note that the QCPU 2 architecture is still being researched,
         designed, and developed, and may still change over time.
         </p>
 
@@ -64,8 +62,9 @@
         <p>
         Data Registers are fully general-purpose. Address Registers are partially special-purpose
         (i.e. the instruction pointer) and contain reserved purposes as well (i.e. the frame
-        pointer). Control & Status Registers cannot be addressed in normal operation and are limited
-        to kernel mode as well.
+        pointer). Data can be moved freely between these two register domains, but they support
+        different operations and adopt different behaviours. Control & Status Registers cannot be
+        addressed in normal operation and are limited to kernel mode.
         </p>
 
         <p>
@@ -95,18 +94,6 @@
         </p>
 
         <p>
-        The zero register is a small but powerful feature in the architecture. Firstly, it enables
-        simple primitive operations to be done for multiple motives due to a statically-known source
-        operand. For example, register-to-register move operations are pseudoinstructions for
-        addition with zero. Similarly, the set-one-if-negative <code>sneg</code> pseudoinstruction
-        is composed of the set-one-if-less-than <code>slt</code> instruction with zero.
-        Secondly, results of operations may be discarded by writing into the zero register, having
-        no architectural effect other than the flag register or other side effects, such as cache
-        behaviour. This is most evident in the prefetch data <code>prfd</code> pseudoinstruction,
-        which is composed of a memory move into the zero register.
-        </p>
-
-        <p>
         QCPU 2 deliberately divides the computational data domain with the computational address
         domain to provide a couple of benefits. Firstly, a second set of general-purpose registers
         increases the total system registers whilst keeping the operand bit size the same for
@@ -119,9 +106,60 @@
         For example, for the instruction pointer <code>ip</code>, a relative jump is performed with
         an add-immediate <code>addi ip, imm</code> instruction on the instruction pointer.
         Once addresses have their own register domain, architectural features may differ from
-        operations on DRs and include special semantics. For example, operations which overflow ARs
+        operations on DRs and include special semantics. For instance, operations which overflow ARs
         may emit hardware exceptions, which is not always desirable for DRs due to the lack of
         informational context by the CPU in traditional programming models.
+        </p>
+
+        <p>
+        ARs are particularly useful within subroutines where memory needs to be accessed:
+        </p>
+
+        <pre>
+        <code>
+function:
+            movew -(sp), d1           ; predecrement word stride 2
+            movew -(sp), d2           ; predecrement word stride 2
+            move fp, sp               ; pseudoinstruction for `add fp, zr, sp`
+            addi sp, -16              ; allocate 16 bytes on stack
+       
+            move sp, fp               ; pseudoinstruction for `add sp, zr, fp`
+            movew d2, (sp)+           ; postincrement word stride 2
+            movew d1, (sp)+           ; postincrement word stride 2
+            ret                       ; pseudoinstruction for `add ip, zr, rp`
+        </code>
+        </pre>
+
+        <p>
+        That being said, all ARs have access to the memory addressing modes as with the stack pointer
+        <code>sp</code>. To do a simple memory move, two increment instructions are saved:
+        </p>
+
+        <pre>
+        <code>
+mem_move:
+            movew -(sp), d1
+
+.loop:      move d1, (a1)+            ; move (a1) to d1
+            move (a2)+, d1            ; move d1 to (a2)
+            dec d2                    ; pseudoinstruction for `addi d2, -1`
+            brh nz, .loop             ; loop if not zero
+
+            movew d1, (sp)+
+            ret
+        </code>
+        </pre>
+
+        <p>
+        The zero register is a small but powerful feature in the architecture. Firstly, it enables
+        simple primitive operations to be done for multiple motives due to a statically-known source
+        operand. For example, register-to-register move operations are pseudoinstructions for
+        addition with zero. Similarly, the set-one-if-negative <code>sneg</code> pseudoinstruction
+        is composed of the set-one-if-less-than <code>slt</code> instruction with zero.
+        Secondly, results of operations may be discarded by writing into the zero register, having
+        no architectural effect other than the flag register or other side effects, such as cache
+        behaviour. This is most evident in the prefetch data <code>prfd</code> pseudoinstruction,
+        which is composed of a memory move into the zero register.
         </p>
 
         <p>
@@ -168,11 +206,39 @@
         </p>
 
         <p>
+        To synchronise CPUs with a lock, a mutex can be implemented using <code>xch</code>:
+        </p>
+
+        <pre>
+        <code>
+            lua a1, .mutex_ptr'u
+            lli d1, 1
+.try_again: xch d1, .mutex_ptr'l(a1)  ; atomically swap 1 into mutex
+            test d1                   ; if 0 is returned, the mutex is now ours
+            brh nz, .try_again
+
+            ; critical section...
+
+            xch zr, .mutex_ptr'l(a0)  ; unlock mutex
+        </code>
+        </pre>
+
+        <p>
         For interrupts, they can be configured on both a local and global level. Individual CPUs can
         enable or disable the reception of certain interrupts. The I/O-mapped global interrupter
         routes platform-level interrupts to available CPUs. However, local interrupts such as the
         CPU timer, address faults, and memory faults are not managed by the global interrupter.
+        These are instead enabled and configured by CSRs, such as the CPU timer:
         </p>
+
+        <pre>
+        <code>
+            lli d1, 16
+            csrw itb, d1              ; interrupt time base = default / 16
+            lli d1, 0b0000_0001
+            csrw ien, d1              ; enable timer interrupt
+        </code>
+        </pre>
 
         <p class="text-tiny-section">Privilege levels</p>
 
