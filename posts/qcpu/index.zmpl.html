@@ -60,11 +60,11 @@
         </ul>
 
         <p>
-        Data Registers are fully general-purpose. Address Registers are partially special-purpose
-        (i.e. the instruction pointer) and contain reserved purposes as well (i.e. the frame
-        pointer). Data can be moved freely between these two register domains, but they support
-        different operations and adopt different behaviours. Control & Status Registers cannot be
-        addressed in normal operation and are limited to kernel mode.
+        Data Registers are fully general-purpose, except for the return pointer. Address Registers
+        are partially special-purpose (i.e. the instruction pointer) and contain reserved purposes
+        as well (i.e. the frame pointer). Data can be moved freely between these two register
+        domains, but they support different operations and adopt different behaviours. Control &
+        Status Registers cannot be addressed in normal operation and are limited to kernel mode.
         </p>
 
         <p>
@@ -74,21 +74,21 @@
             </thead>
             <tbody>
                 <tr> <td>Data Register</td>         <td><code>r0<code></td>     <td><strong>zr</strong> (zero)</td>             </tr>
-                <tr> <td>Data Register/Async</td>   <td><code>r1<code></td>     <td><strong>d1</strong></td>                    </tr>
-                <tr> <td>Data Register/Async</td>   <td><code>r2<code></td>     <td><strong>d2</strong></td>                    </tr>
-                <tr> <td>Data Register/Async</td>   <td><code>r3<code></td>     <td><strong>d3</strong></td>                    </tr>
-                <tr> <td>Data Register/Async</td>   <td><code>r4<code></td>     <td><strong>d4</strong></td>                    </tr>
-                <tr> <td>Data Register/Async</td>   <td><code>r5<code></td>     <td><strong>d5</strong></td>                    </tr>
-                <tr> <td>Data Register/Async</td>   <td><code>r6<code></td>     <td><strong>d6</strong></td>                    </tr>
-                <tr> <td>Data Register/Async</td>   <td><code>r7<code></td>     <td><strong>d7</strong></td>                    </tr>
+                <tr> <td>Data Register/Async</td>   <td><code>r1<code></td>     <td><strong>rp</strong> (return ptr)</td>       </tr>
+                <tr> <td>Data Register/Async</td>   <td><code>r2<code></td>     <td><strong>d1</strong></td>                    </tr>
+                <tr> <td>Data Register/Async</td>   <td><code>r3<code></td>     <td><strong>d2</strong></td>                    </tr>
+                <tr> <td>Data Register/Async</td>   <td><code>r4<code></td>     <td><strong>d3</strong></td>                    </tr>
+                <tr> <td>Data Register/Async</td>   <td><code>r5<code></td>     <td><strong>d4</strong></td>                    </tr>
+                <tr> <td>Data Register/Async</td>   <td><code>r6<code></td>     <td><strong>d5</strong></td>                    </tr>
+                <tr> <td>Data Register/Async</td>   <td><code>r7<code></td>     <td><strong>d6</strong></td>                    </tr>
                 <tr> <td>Address Register</td>      <td><code>r8<code></td>     <td><strong>zr</strong> (zero)</td>             </tr>
                 <tr> <td>Address Register</td>      <td><code>r9<code></td>     <td><strong>ip</strong> (instruction ptr)</td>  </tr>
-                <tr> <td>Address Register</td>      <td><code>r10<code></td>    <td><strong>rp</strong> (return ptr)</td>       </tr>
-                <tr> <td>Address Register</td>      <td><code>r11<code></td>    <td><strong>sp</strong> (stack ptr)</td>        </tr>
-                <tr> <td>Address Register</td>      <td><code>r12<code></td>    <td><strong>fp</strong> (frame ptr)</td>        </tr>
-                <tr> <td>Address Register</td>      <td><code>r13<code></td>    <td><strong>a1</strong></td>                    </tr>
-                <tr> <td>Address Register</td>      <td><code>r14<code></td>    <td><strong>a2</strong></td>                    </tr>
-                <tr> <td>Address Register</td>      <td><code>r15<code></td>    <td><strong>a3</strong></td>                    </tr>
+                <tr> <td>Address Register</td>      <td><code>r10<code></td>    <td><strong>sp</strong> (stack ptr)</td>        </tr>
+                <tr> <td>Address Register</td>      <td><code>r11<code></td>    <td><strong>fp</strong> (frame ptr)</td>        </tr>
+                <tr> <td>Address Register</td>      <td><code>r12<code></td>    <td><strong>a1</strong></td>                    </tr>
+                <tr> <td>Address Register</td>      <td><code>r13<code></td>    <td><strong>a2</strong></td>                    </tr>
+                <tr> <td>Address Register</td>      <td><code>r14<code></td>    <td><strong>a3</strong></td>                    </tr>
+                <tr> <td>Address Register</td>      <td><code>r15<code></td>    <td><strong>a4</strong></td>                    </tr>
             </tbody>
         </table>
         </p>
