@@ -12,6 +12,13 @@ path: []const u8 = "",
 
 pub const posts = [_]Post {
     .{
+        .name = "Evil LLMs",
+        .title = "I think LLMs are evil",
+        .description = "How LLMs violate Open Source, and humanity itself",
+        .created = "2026-10-08",
+        .last_change = "2026-10-08",
+        .path = "posts/evil-llms" },
+    .{
         .name = "QCPU 2",
         .title = "Philosophy of the QCPU 2 architecture",
         .description = "A 16 bit RISC microprocessor architecture",

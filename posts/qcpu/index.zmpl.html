@@ -219,7 +219,7 @@ mem_move:
 
             ; critical section...
 
-            xch zr, .mutex_ptr'l(a0)  ; unlock mutex
+            xch zr, .mutex_ptr'l(a1)  ; unlock mutex
         </code>
         </pre>
 
