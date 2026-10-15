@@ -13,3 +13,21 @@
 </div>
 
 {{zmpl.fmt.raw(zmpl.get("content"))}}
+
+@if (zmpl.get("signature")) |signature|
+    <div class="two-column underlined">
+        <div class="content">
+            <p class="text-subtext">Signature</p>
+
+            <div>
+            This text was written by Joey Smalen, signed with this <a href="/privacy">PGP public key</a>.
+            </div>
+
+            <pre>
+            <code>
+{{signature}}
+            </code>
+            </pre>
+        </div>
+    </div>
+@end

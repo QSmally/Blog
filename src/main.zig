@@ -23,14 +23,27 @@ pub fn main(init: std.process.Init) !void {
 
         var file = try cwd.openFile(io, input_path, .{});
         defer file.close(io);
-
         var reader = file.reader(io, &.{});
-        const content = try reader.interface.allocRemaining(gpa, @enumFromInt(4 * 8192));
+        const content = try reader.interface.allocRemaining(gpa, .limited(32 * 1024));
         defer gpa.free(content);
 
         var data = zmpl.Data.init(io, arena);
         var body = try data.object();
         try body.put("content", data.string(content));
+
+        signature: {
+            const signature_path = try std.fmt.allocPrint(arena, "{s}/index.zmpl.html.asc", .{ post.path });
+
+            var signature_file = cwd.openFile(io, signature_path, .{}) catch |err| switch (err) {
+                error.FileNotFound => break :signature,
+                else => return err
+            };
+            defer signature_file.close(io);
+            var signature_reader = signature_file.reader(io, &.{});
+            const signature = try signature_reader.interface.allocRemaining(arena, .limited(4 * 1024));
+
+            try body.put("signature", data.string(signature));
+        }
 
         const gen_post = try adapter.render(io, &data, Post, post, &.{}, .{ .layout = viewport });
         try cwd.writeFile(io, .{ .sub_path = output_path, .data = gen_post });
