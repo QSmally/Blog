@@ -23,7 +23,7 @@ pub const posts = [_]Post {
         .title = "Philosophy of the QCPU 2 architecture",
         .description = "A 16 bit RISC microprocessor architecture",
         .created = "2026-08-16",
-        .last_change = "2026-09-19",
+        .last_change = "2026-10-16",
         .path = "posts/qcpu" },
     .{
         .name = "68000",
