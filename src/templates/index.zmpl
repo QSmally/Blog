@@ -8,10 +8,15 @@
         </p>
 
         <p>
-        This server also aims to include all the files I reference, such as
+        This server hosted on the Internet also aims to mirror all the
+        documentation that I reference within a blog post, such as
         datasheets. All rights are reserved to the original authors and all
-        that. I'd appreciate it that information or pictures from me will be
-        cited to their respective hyperlinks.
+        that stuff. For my original work, I'd appreciate that information taken
+        from me will be cited to their respective blog post.
+        </p>
+
+        <p>
+        I don't use LLMs/AI tools to produce my work.
         </p>
 
         <p>

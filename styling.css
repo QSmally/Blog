@@ -97,6 +97,12 @@ img, video {
     height: 3em;
 }
 
+hr {
+    min-width: 100%;
+    border: 0;
+    border-top: 1px dashed;
+}
+
 li {
     list-style-position: inside;
 }

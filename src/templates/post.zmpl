@@ -12,22 +12,22 @@
     @end
 </div>
 
+<!-- BEGIN SIGNED MESSAGE -->
 {{zmpl.fmt.raw(zmpl.get("content"))}}
+<!-- END SIGNED MESSAGE -->
 
 @if (zmpl.get("signature")) |signature|
-    <div class="two-column underlined">
-        <div class="content">
-            <p class="text-subtext">Signature</p>
+    <div class="content underlined">
+        <hr/>
 
-            <div>
-            This text was written by Joey Smalen, signed with this <a href="/privacy">PGP public key</a>.
-            </div>
+        <p>
+        This text was written by Joey Smalen, signed with this <a href="/privacy">PGP public key</a>.
+        </p>
 
-            <pre>
-            <code>
+        <pre>
+        <code>
 {{signature}}
-            </code>
-            </pre>
-        </div>
+        </code>
+        </pre>
     </div>
 @end
