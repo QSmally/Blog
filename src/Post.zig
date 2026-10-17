@@ -16,7 +16,7 @@ pub const posts = [_]Post {
         .title = "I think LLMs are evil",
         .description = "How LLMs violate Open Source, and humanity itself",
         .created = "2026-10-08",
-        .last_change = "2026-10-16",
+        .last_change = "2026-10-17",
         .path = "posts/evil-llms" },
     .{
         .name = "QCPU 2",
