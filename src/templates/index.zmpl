@@ -27,11 +27,11 @@
 
         <ul>
             @zig {
-                for (@TypeOf(context).posts) |post| {
-                    if (post.visibility == .invisible)
+                for (context.posts) |post| {
+                    if (post.manifest.visibility == .invisible)
                         continue;
                     <li>
-                        <a href="/{{post.path}}"><code>{{post.created}} </code> {{post.title}}</a>
+                        <a href="/{{post.directory_path}}"><code>{{post.manifest.created}} </code> {{post.manifest.title}}</a>
                     </li>
                 }
             }
@@ -42,18 +42,18 @@
         <div class="text-tiny-section">Featured</div>
 
         @zig {
-            for (@TypeOf(context).posts) |post| {
-                if (post.visibility != .featured)
+            for (context.posts) |post| {
+                if (post.manifest.visibility != .featured)
                     continue;
                 <div class="two-column">
                     <div class="context">
-                        <a class="text-subsection" href="/{{post.path}}">{{post.name}}</a>
-                        <div class="text-subtext">{{post.title}}</div>
-                        <div class="text-subtext">{{post.created}}</div>
-                        <p>{{post.description}}</p>
+                        <a class="text-subsection" href="/{{post.directory_path}}">{{post.manifest.name}}</a>
+                        <div class="text-subtext">{{post.manifest.title}}</div>
+                        <div class="text-subtext">{{post.manifest.created}}</div>
+                        <p>{{post.manifest.description}}</p>
                     </div>
-                    if (post.thumbnail.len > 0) {
-                        <a href="/{{post.path}}"><img class="thumbnail" src="/{{post.thumbnail}}" alt="{{post.title}}"/></a>
+                    if (post.manifest.thumbnail) |thumbnail| {
+                        <a href="/{{post.directory_path}}"><img class="thumbnail" src="/{{thumbnail}}" alt="{{post.manifest.title}}"/></a>
                     }
                 </div>
             }

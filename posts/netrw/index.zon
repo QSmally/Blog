@@ -1,0 +1,7 @@
+.{
+    .name = "Netrw",
+    .title = "Accidentally printing 12 pages of files",
+    .description = "How a Netrw default wasted my paper supply",
+    .visibility = .visible,
+    .created = "2025-12-28"
+}

@@ -1,0 +1,9 @@
+.{
+    .name = "6502",
+    .title = "W65C02 breadboard project",
+    .description = "System running original Apple I software with UART",
+    .visibility = .visible,
+    .created = "2025-12-22",
+    .last_change = "2025-12-26",
+    .thumbnail = "posts/6502/thumbnail.jpg"
+}

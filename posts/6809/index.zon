@@ -1,0 +1,9 @@
+.{
+    .name = "6809",
+    .title = "MC6809 breadboard project",
+    .description = "some information here",
+    .visibility = .visible,
+    .created = "2026-02-04",
+    .last_change = "2026-03-02",
+    .thumbnail = "posts/6809/thumbnail.jpg"
+}

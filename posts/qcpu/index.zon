@@ -1,0 +1,13 @@
+.{
+    .name = "QCPU 2",
+    .title = "Philosophy of the QCPU 2 architecture",
+    .description = "A 16 bit RISC microprocessor architecture",
+    .visibility = .featured,
+    .created = "2026-08-16",
+    .last_change = "2026-10-16",
+
+    .changelog = .{
+        .{ .date = "2026-09-19", .description = "The <code>rp</code> register is now part of DRs, which allows function prologues/epilogues to directly move <code>rp</code> to/from memory, as ARs are not targetable in memory instructions." },
+        .{ .date = "2026-10-16", .description = "The goal is clarified to explicitly focus on memory efficiency compared to modern microprocessors." }
+    }
+}

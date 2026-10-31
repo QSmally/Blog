@@ -1,0 +1,9 @@
+.{
+    .name = "Z80",
+    .title = "Z84C00 breadboard project",
+    .description = "System on a Breadboard (SoB)",
+    .visibility = .visible,
+    .created = "2025-12-30",
+    .last_change = "2026-03-08",
+    .thumbnail = "posts/z80/dma-system.jpg"
+}

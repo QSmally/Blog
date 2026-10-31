@@ -107,6 +107,10 @@ li {
     list-style-position: inside;
 }
 
+li + li {
+    margin-top: 4px;
+}
+
 footer {
     display: flex;
     justify-content: space-between;
@@ -175,8 +179,6 @@ ul > ul {
 
 .text-subtext {
     color: rgb(100, 105, 116);
-    font-weight: 500;
-    font-size: 105%;
 }
 
 .entity {

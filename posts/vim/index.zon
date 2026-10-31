@@ -1,0 +1,7 @@
+.{
+    .name = "Vim",
+    .title = "Controversy about modern IDEs",
+    .description = "My reasons for preferring Vim over 'modern' IDEs",
+    .visibility = .visible,
+    .created = "2025-12-23"
+}

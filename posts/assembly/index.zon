@@ -1,0 +1,7 @@
+.{
+    .name = "Assembly",
+    .title = "The take on assembly",
+    .description = "Scariness of assembly, and different levels of computing systems",
+    .visibility = .visible,
+    .created = "2026-03-08"
+}
